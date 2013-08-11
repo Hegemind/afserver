@@ -4,9 +4,8 @@
  */
 
 var express = require('express')
-	, routes = require('./routes/pages')
-	, db = require('./routes/db')
-	, security = require('./routes/security')
+ 	, db = require('./admin/db')
+ 	, security = require('./admin/security')
 	, http = require('http')
 	, charsheet = require('./game/charsheet')
 	, path = require('path');
@@ -28,11 +27,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// REST
-app.get('/', routes.index);
-
 // User
-app.get('/login', security.login);
+ app.get('/login', security.login);
 
 // Game resources
 app.get('/charsheet', charsheet.getCurrentCharsheet);

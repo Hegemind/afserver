@@ -1,415 +1,151 @@
-// Clase de acceso a la base de datos de usuarios desde nodejs
-
-// BORRAME?
-var mysql = require('mysql');
 var crypto = require('crypto');
-// BORRAME?
+// var mongoose = require('mongoose');
+var db = require('./db');
 
-
-var mongoose = require('mongoose');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
 
 // ******************************************************************************
-// ******************************************************* DEFINICION DE ESQUEMAS
+// *********************************************************** FUNCIONES PUBLICAS
 
-var userSchema = new mongoose.Schema({
-	login: String,
-	password: String
-});
-
-// Creacion de los modelos
-var User = mongoose.model('User', userSchema);
-
-// Exportarlos para que esten disponibles en las aplicaciones
-exports.User = User;
-
-// var client = mysql.createConnection({
-// 	user: 'ruuuuut',
-// 	password: 'alumno',
-// 	host: '127.0.0.1',
-// 	port: '3306',
-// });
-// client.connect();
-// client.query('use usersDB');
-
-
-/**
- *	Registra una cookie asociada a un id
- *
- *	id -> id del usuario
- *	cookie -> cookie para el usuario
- */
-
-// function registerCookie(id, cookie) {
-// 
-// 	if (checkLength(id, cookie)) {
-// 
-// 		client.query('UPDATE cookies SET cookie = ? WHERE id = ?', [cookie, id], function(err) {
-// 
-// 			if (err) {
-// 
-// 				throw err;
-// 
-// 			}
-// 		});
-// 	}
-// 
-// }
-
-
-/**
- *	Comprueba si una cookie pertenece a un usuario
- *
- *	id -> id del usuario
- *	cookie -> cookie para comprobar
- */
-
-
-// function checkCookie(id, userCookie, action, actionError) {
-// 	
-//  	if (checkLength(id, userCookie)) {
-// 		
-// 		client.query('SELECT cookie FROM cookies WHERE id = ?', [id], function(err, cookie) {
-// 			
-// 			if (err) {
-// 
-// 				console.log(err);
-// 			}
-// 
-// 			// Se comprueba la veracidad y validez en el tiempo
-// 
-// 			if (userCookie.localeCompare(cookie[0].cookie) == 0 && checkCookieDate(cookie[0].cookie)) {
-// 
-// 				action();
-// 
-// 			} else {
-// 				actionError();
-// 			}
-// 		});
-// 	} else {
-// 
-// 		console.log("ID" + id);
-// 		console.log("userCookie"+ userCookie);
-// 		console.log("Error en los parametros");
-// 	}
-// 
-// }
-
-
-function checkCookieDate(cookie) {
-
-
-	var cookieString = cookie.split(";");
-	var dateString = cookieString[1].split("=");
-
-	return new Date().getTime() < new Date(dateString[1]).getTime();
-
+exports.registerUser = function (req, res) {
+	var user = req.body.user;
+	var pass = req.body.password;
+	
+	// Comprueba que el user y el pass no son vacios
+	if(user == null) {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'User may not be empty'
+		});
+	}
+	if(pass == null) {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'Password may not be empty'
+		});
+	}
+	
+	// Si esta logueado no puede registrarse
+	if(req.session.user_id) {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'Please log out first'
+		});
+	}
+	
+	// Busca el usuario en la base de datos
+	db.findUserByLogin(user, function (err, thisUser) {
+		if(err) {
+			console.log(err);
+			res.json(200, {
+				statusCode: '500',
+				statusMessage : 'Error accessing DB information'
+			});
+		}
+		
+		// Comprueba si el usuario existe
+		if (thisUser != null /*&& thisUser.password == digest*/) {
+			
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'The user already exists'
+			});
+				
+		} else {
+			// El usuario no existe, se puede crear
+			db.createNewUser(user, password);
+			
+			req.session.user_id = 123456;
+			
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'User created successfully'
+			});
+		}
+	});
 }
 
+exports.login = function(req, res) {
+	var user = req.body.user;
+	var pass = req.body.password;
+	
+	// Busca el usuario en la base de datos
+	db.findUserByLogin(user, function (err, thisUser) {
+		
+		if(err) {
+			console.log(err);
+			res.json(200, {
+				statusCode: '500',
+				statusMessage : 'Error accessing login information'
+			});
+		}
+		
+		// Calcula resumen SHA1 del password
+		var digest = crypto.createHash('sha1').update(pass, 'utf8').digest('hex')
+		
+		// Comprueba que el usuario existe y que el password es correcto
+		if (thisUser != null && thisUser.password == digest) {
+			
+			// TODO obtener user_id
+			req.session.user_id = 123456;
 
-/**
- *       Crea una cookie en base a un valor y una fecha
- *
- *       id -> id del usuario al que va la cookie
- *       value -> valor para crear la cookie
- *	days -> dias de validez
- */
-
-function createCookie(name, value, days) {
-
-	if (days) {
-
-		var date = new Date();
-		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-		var expires = "; expires=" + date.toGMTString();
-
-	} else var expires = "";
-
-	return name + "=" + value + expires + "; path=/";
-
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'You have been logged in correctly'
+			});
+		} else {
+			// El usuario no existe o el password no es correcto
+			// TODO discriminar errores?
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'You are not authorized to log in'
+			});
+		}
+	});
 }
 
+exports.logout = function (req, res) {
+	// Si el usuario esta logueado lo desloguea
+	if(req.session.user_id) {
+		delete req.session.user_id;
+		res.json(200, {
+			statusCode: '200',
+			statusMessage : 'You have been logged out correctly'
+		});
+	} 
+	// Si no esta logueado muestra error
+	else {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'You were not logged in'
+		});
+	}
+}
 
+exports.checkAuth = function(req, res, next) {
+	if (!req.session.user_id) {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'You are not allowed to do that'
+		});
+	} else {
+		res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+		next();
+	}
+}
 
-/**
- *	Inserta usuario facilitando todos sus datos.
- *	id -> id del  usuario
- *	nombre -> nombre completo del usuario
- *	password -> hash md5 del password
- */
-
-
-// function insertUser(id, nombre, password) {
-// 
-// 
-// 	if (checkLength(id, nombre, password)) {
-// 
-// 		client.query('INSERT INTO usuarios SET id = ?, nombre = ?, password = MD5(?)', [id, nombre, password], function(err) {
-// 
-// 			if (err) {
-// 
-// 
-// 				throw err;
-// 
-// 			}
-// 
-// 		});
-// 
-// 		client.query('INSERT INTO cookies SET id = ?, cookie=""', [id], function(err) {
-// 
-// 			if (err) {
-// 				throw err;
-// 
-// 			}
-// 
-// 		});
-// 
-// 	}
-// 
-// }
-
-
-
-/**
- *	Inserta usuario facilitando todos sus datos.
- *	id -> id del  usuario
- *	nombre -> nombre completo del usuario
- *	password -> hash md5 del password
- */
-
-
-// function insertUser2(id, nombre, password) {
-// 
-// 
-// 	if (checkLength(id, nombre, password)) {
-// 
-// 		client.query('INSERT INTO usuarios SET id = ?, nombre = ?, password = SHA(?)', [id, nombre, password], function(err) {
-// 
-// 			if (err) {
-// 
-// 
-// 				throw err;
-// 
-// 			}
-// 
-// 		});
-// 
-// 		client.query('INSERT INTO cookies SET id = ?, cookie=""', [id], function(err) {
-// 
-// 			if (err) {
-// 				throw err;
-// 
-// 			}
-// 
-// 		});
-// 
-// 	}
-// 
-// }
-
-/**
- *	Elimina un usuario facilitando la id
- *	id -> usuario a elminar
- */
-
-// function deleteUser(id) {
-// 
-// 	if (checkLength(id)) {
-// 
-// 
-// 		client.query('DELETE FROM usuarios WHERE id=?', [id], function(err) {
-// 
-// 			if (err) {
-// 				connection.end();
-// 				throw err;
-// 			}
-// 
-// 		});
-// 	}
-// 
-// }
-
-
-/**
- *	Obtiene el nombre del usuario a partir de la id
- *	id -> id del usuario
- */
-
-// function getNombre(id) {
-// 
-// 	if (checkLength(id)) {
-// 
-// 
-// 		client.query('SELECT nombre FROM usuarios WHERE id=?', [id], function(err, nombre) {
-// 
-// 			if (err) {
-// 
-// 				throw err;
-// 
-// 			}
-// 
-// 			return nombre;
-// 		});
-// 	}
-// }
-
-
-/**
- *	Comprueba la contraseña del usuario id.
- *	id -> usuario
- *	key -> hash(contraseña de id + date);
- *	Return true si es un usuario valido o false en caso contrario
- */
-
-function authenticate(id, key, date, response) {
-	console.log("authenticate() called");
-// 	if (checkLength(id, key, date)) {
-// 
-// 
-// 		console.log(id + " " + key + " " + " " + date);
-// 		// Consulta la contraseña en la base de datos
-// 		client.query('SELECT password FROM usuarios WHERE id=?', [id], function(err, password) {
-// 
-// 			if (err) {
-// 				throw err;
-// 			}
-// 
-// 			console.log("******CONSULTANDO LA BASE DE DATOS PARA OBTENER CONTRASEÑA*****")
-// 
-// 
-// 			// Comprueba que exista una contraseña para ese usuario
-// 			if (password.length) {
-// 				//Hace el hash de la contraseña y la fecha
-// 				console.log(password[0].password);
-// 				var md5sum = crypto.createHash('md5');
-// 				md5sum.update(password[0].password + date);
-// 				var digest = md5sum.digest('hex');
-// 
-// 				// Compara las dos contraseñas y construye la respuesta en base a ellas
-// 				if (key.localeCompare(digest) == 0) {
-// 					console.log("Usuario conectado: " + id);
-// 					console.log("CONTRASEÑA ACEPTADA");
-// 					var cookie = createCookie(id, 1, 1);
-// 					registerCookie(id, cookie);
-// 					response(cookie);
-// 					console.log("Cookie : " + cookie);
-// 
-// 				} else {
-// 					console.log("MD5");
-// 					console.log("Contraseña erronea");
-// 					// Responde con una cadena vacia
-// 					response("");
-// 				}
-// 
-// 			} else {
-// 
-// 				console.log("Usuario incorrecto");
-// 				// Responde con una cadena vacia
-// 				response("");
-// 			}
-// 		});
-// 	}
-};
-
-
-
-
-/**
- *	Comprueba la contraseña del usuario id.
- *	id -> usuario
- *	key -> hash(contraseña de id + date);
- *	Return true si es un usuario valido o false en caso contrario
- */
-
-// function authenticateSHA(id, key, date, response) {
-// 
-// 	if (checkLength(id, key, date)) {
-// 
-// 
-// 		console.log(id + " " + key + " " + " " + date);
-// 		// Consulta la contraseña en la base de datos
-// 		client.query('SELECT password FROM usuarios2 WHERE id=?', [id], function(err, password) {
-// 
-// 			if (err) {
-// 
-// 				throw err;
-// 
-// 			}
-// 
-// 			console.log("******CONSULTANDO LA BASE DE DATOS PARA OBTENER CONTRASEÑA*****")
-// 
-// 
-// 			// Comprueba que exista una contraseña para ese usuario
-// 			if (password.length) {
-// 
-// 
-// 				//Hace el hash de la contraseña y la fecha
-// 					console.log("clave: "+password[0].password);
-// 				var md5sum = crypto.createHash('sha1');
-// 				md5sum.update(password[0].password + date);
-// 				var digest = md5sum.digest('hex');
-// 				// Compara las dos contraseñas y construye la respuesta en base a ellas
-// 				if (key.localeCompare(digest) == 0) {
-// 
-// 					console.log("Usuario conectado: " + id);
-// 					console.log("CONTRASEÑA ACEPTADA");
-// 					var cookie = createCookie(id, 1, 1);
-// 					registerCookie(id, cookie);
-// 					response(cookie);
-// 					console.log("Cookie : " + cookie);
-// 
-// 				} else {
-// 					console.log("Digest: "+digest);
-// 					console.log("key: "+key);
-// 					console.log("SHA");
-// 					console.log("Contraseña erronea");
-// 					// Responde con una cadena vacia
-// 					response("");
-// 				}
-// 
-// 
-// 			} else {
-// 
-// 				console.log("Usuario incorrecto");
-// 				// Responde con una cadena vacia
-// 				response("");
-// 			}
-// 
-// 		});
-// 	}
-// };
-
-/**
- *	Funcion para comprobar la validez de los parametros facilitados
- *	Devuelve true si todos los parametros son buenos y false en caso
- *	contrario
- *
- */
-
-// function checkLength() {
-// 
-// 
-// 	for (var i = arguments.length - 1; i >= 0; i--) {
-// 		if (!arguments[i]) return false;
-// 	};
-// 	return true;
-// }
-
-
-
-/***** Funciones publicas *****/
-
-// exports.getUsuario = getUsuario;
-// exports.checkCookie = checkCookie;
-exports.authenticate = authenticate;
-// exports.authenticateSHA = authenticateSHA;
-// exports.insertUser = insertUser;
-// exports.deleteUser = deleteUser;
-// exports.registerCookie = registerCookie;
-
-/***** Casos de prueba *****/
-
-// Contraseña vacia 
-
-//authenticate("sr4","","1654165",res);
+exports.listUsers = function(req, res) {
+	
+	db.listUsers(function(err, data){
+		if (err){
+			console.log('Error reading User collection');
+			res.json(200, {
+				statusCode: '500',
+				statusMessage : 'Error accessing user database'
+			});
+		}
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+}

@@ -1,46 +1,76 @@
-var usersDBAccess = require("./users");
+var users = require("./users");
+var User = users.User;
+
+var crypto = require('crypto');
+
+exports.checkAuth = function(req, res, next) {
+	if (!req.session.user_id) {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'You are not authorized to access this operation'
+		});
+	} else {
+		res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+		next();
+	}
+}
 
 exports.login = function(req, res) {
-// 	if (!comprobarCamposHTTP(req)) {
-		// Solicitamos la autenticacion al adaptador
-// 		if(req.get('HashType')==='MD5')
-// 			usersDBAccess.authenticate(req.get('User-Agent'), req.get('apiKey'), req.get('Date'), accion);
-// 		else
-// 			usersDBAccess.authenticateSHA(req.get('User-Agent'), req.get('apiKey'), req.get('Date'), accion);
+	var user = req.body.user;
+	var pass = req.body.password;
+	
+	// Busca el usuario en la base de datos
+	User.findOne({ 'login': user }, function (err, thisUser) {
 		
-		function accion(cookie) {
-
-			//PARA PRUEBAS CON RESTCLIENT usersDBAccess.authenticate(req.get('User'), digest, req.get('Dates'), function(cookie) {
-
-			// Se devuelve una respuesta en funcion del resultado de la peticion
-			if (cookie.length) {
-				res.writeHead(200, {
-					"Content-Type": "text/html",
-					"Cookie": cookie
-				});
-				// PARA PRUEBAS CON RESTCLIENT res.write("Bienvenido de nuevo " + req.get('User'));
-				res.write("Bienvenido " + req.get('User-Agent'));
-
-				res.end();
-			} else {
-				res.json(402, {
-					status: 'Authentication error. Usuario o contraseña incorrectos'
-				});
-				res.end();
-			}
+		if(err) {
+			console.log(err);
+			
+			res.json(200, {
+				statusCode: '500',
+				statusMessage : 'Error accessing login information'
+			});
 		}
-// 	} else {
-		res.json(402, {
-			statusCode: '404',
-			statusMessage : 'Not found'
+		
+		// Calcula resumen SHA1 del password
+		var digest = crypto.createHash('sha1').update(pass, 'utf8').digest('hex')
+		
+		// Comprueba que el usuario existe y que el password es correcto
+		if (thisUser != null && thisUser.password == digest) {
+			
+			// TODO obtener user_id
+			req.session.user_id = 123456;
+
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'You have been logged in correctly'
+			});
+		} else {
+			// El usuario no existe o el password no es correcto
+			// TODO discriminar errores?
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'You are not authorized to log in'
+			});
+		}
+	});
+	
+	
+}
+
+exports.logout = function (req, res) {
+	// Si el usuario esta logueado lo desloguea
+	if(req.session.user_id) {
+		delete req.session.user_id;
+		res.json(200, {
+			statusCode: '200',
+			statusMessage : 'You have been logged in correctly'
 		});
-		res.end();
-// 	}
+	} 
+	// Si no esta logueado muestra error
+	else {
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'You were not logged in'
+		});
+	}
 }
-
-// Comprueba que no falta ningun campo necesario para la autenticacion
-
-function comprobarCamposHTTP(req) {
-	return (typeof req.get('Date') === 'undefined') || (typeof req.get('apiKey') === 'undefined') || (typeof req.get('User-Agent') === 'undefined');
-}
-

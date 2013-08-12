@@ -1,9 +1,28 @@
 // Clase de acceso a la base de datos de usuarios desde nodejs
 
+// BORRAME?
 var mysql = require('mysql');
 var crypto = require('crypto');
+// BORRAME?
 
 
+var mongoose = require('mongoose');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
+// ******************************************************************************
+// ******************************************************* DEFINICION DE ESQUEMAS
+
+var userSchema = new mongoose.Schema({
+	login: String,
+	password: String
+});
+
+// Creacion de los modelos
+var User = mongoose.model('User', userSchema);
+
+// Exportarlos para que esten disponibles en las aplicaciones
+exports.User = User;
 
 // var client = mysql.createConnection({
 // 	user: 'ruuuuut',

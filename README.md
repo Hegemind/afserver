@@ -1,4 +1,4 @@
 AFServer
 ========
 
-AlterFuturaServer
+Servicio REST para aplicación AlterFutura/Hegemon. Basado en Node JS.

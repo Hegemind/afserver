@@ -10,22 +10,18 @@ exports.registerUser = function (req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
 	
+	console.log(req.body);
+	
 	// Comprueba que el user y el pass no son vacios
-	if(user == null) {
+	if(user == null || pass == null) {
 		res.json(200, {
 			statusCode: '401',
-			statusMessage : 'User may not be empty'
-		});
-	}
-	if(pass == null) {
-		res.json(200, {
-			statusCode: '401',
-			statusMessage : 'Password may not be empty'
+			statusMessage : 'User and password may not be empty'
 		});
 	}
 	
 	// Si esta logueado no puede registrarse
-	if(req.session.user_id) {
+	else if(req.session.user_id) {
 		res.json(200, {
 			statusCode: '401',
 			statusMessage : 'Please log out first'
@@ -33,35 +29,37 @@ exports.registerUser = function (req, res) {
 	}
 	
 	// Busca el usuario en la base de datos
-	db.findUserByLogin(user, function (err, thisUser) {
-		if(err) {
-			console.log(err);
-			res.json(200, {
-				statusCode: '500',
-				statusMessage : 'Error accessing DB information'
-			});
-		}
-		
-		// Comprueba si el usuario existe
-		if (thisUser != null /*&& thisUser.password == digest*/) {
+	else {
+		db.findUserByLogin(user, function (err, thisUser) {
+			if(err) {
+				console.log(err);
+				res.json(200, {
+					statusCode: '500',
+					statusMessage : 'Error accessing DB information'
+				});
+			}
 			
-			res.json(200, {
-				statusCode: '401',
-				statusMessage : 'The user already exists'
-			});
+			// Comprueba si el usuario existe
+			if (thisUser != null /*&& thisUser.password == digest*/) {
 				
-		} else {
-			// El usuario no existe, se puede crear
-			db.createNewUser(user, password);
-			
-			req.session.user_id = 123456;
-			
-			res.json(200, {
-				statusCode: '200',
-				statusMessage : 'User created successfully'
-			});
-		}
-	});
+				res.json(200, {
+					statusCode: '401',
+					statusMessage : 'The user already exists'
+				});
+					
+			} else {
+				// El usuario no existe, se puede crear
+				db.createNewUser(user, pass);
+				
+				req.session.user_id = 123456;
+				
+				res.json(200, {
+					statusCode: '200',
+					statusMessage : 'User created successfully'
+				});
+			}
+		});
+	}
 }
 
 exports.login = function(req, res) {
@@ -80,7 +78,7 @@ exports.login = function(req, res) {
 		}
 		
 		// Calcula resumen SHA1 del password
-		var digest = crypto.createHash('sha1').update(pass, 'utf8').digest('hex')
+		var digest = crypto.createHash('sha1').update(pass, 'utf8').digest('hex');
 		
 		// Comprueba que el usuario existe y que el password es correcto
 		if (thisUser != null && thisUser.password == digest) {
@@ -122,6 +120,7 @@ exports.logout = function (req, res) {
 }
 
 exports.checkAuth = function(req, res, next) {
+	// TODO No solo hay que comprobar que existe un user_id, sino que es el correcto
 	if (!req.session.user_id) {
 		res.json(200, {
 			statusCode: '401',

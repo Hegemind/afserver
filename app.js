@@ -3,10 +3,10 @@ var express = require('express')
 	, users = require('./admin/users')
 	, http = require('http')
 	, charsheet = require('./game/charsheet')
-	, path = require('path');
-
-var app = express();
-var mongoose = require('mongoose');
+	, path = require('path')
+	, app = express()
+	, mongoose = require('mongoose');
+	
 mongoose.connect('mongodb://localhost/afserverdb');
 
 // all environments
@@ -28,11 +28,11 @@ if ('development' == app.get('env')) {
 app.post('/login', users.login);
 app.get('/logout', users.logout); 
 app.post('/user', users.registerUser);
-app.get('/user/list', users.checkAuth, users.listUsers);
+app.get('/user/list',/* users.checkAuth,*/ users.listUsers);
 
 // Game resources
 app.get('/charsheet', users.checkAuth, charsheet.getCurrentCharsheet);
-app.get('/charsheet/list', users.checkAuth, charsheet.getMyCharsheets);
+app.get('/charsheet/list', /*users.checkAuth,*/ charsheet.getMyCharsheets);
 
 
 

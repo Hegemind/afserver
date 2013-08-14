@@ -27,8 +27,11 @@ exports.findUserByLogin = function(user, callback) {
 
 exports.createNewUser = function(user, pass) {
 	// Calcula resumen SHA1 del password
-	var password = crypto.createHash('sha1').update(pass, 'utf8').digest('hex');
-
+	var sha = crypto.createHash('sha1');
+	sha.update(pass, 'utf8');
+	var password = sha.digest('hex');
+	
+	
 	new User({
 		login: user,
 		password: password

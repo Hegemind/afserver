@@ -4,7 +4,7 @@ var sha1 = crypto.createHash('sha1');
 
 // Importar modelos
 var Charsheet = require("./game/charsheet").Charsheet;
-var User = require("./admin/users").User;
+var User = require("./admin/db").User;
 
 
 // Conectar a la base de datos

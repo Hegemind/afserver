@@ -1,41 +1,11 @@
-var mongoose = require('mongoose');
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
+var db = require('../admin/db');
 
-// ******************************************************************************
-// ******************************************************* DEFINICION DE ESQUEMAS
-
-var charsheetSchema = new mongoose.Schema({
-	name: String,
-	age: Number,
-	gender: String,
-	race: String,
-	language: String,
-	str: Number,
-	con: Number,
-	agi: Number,
-	pow: Number,
-	dex: Number,
-	cha: Number,
-	int: Number,
-});
-
-// Creacion de los modelos
-var Charsheet = mongoose.model('Charsheet', charsheetSchema);
-
-// Exportarlos para que esten disponibles en las aplicaciones
-exports.Charsheet = Charsheet;
-
-// ******************************************************************************
-// ****************************************************************** OPERACIONES
-
-exports.getMyCharsheets = function(req, res){
-	// TODO Check user credentials
+exports.getAllCharsheetsInGame = function(req, res){
+	// TODO Comprobar que usuario logueado es el DJ de la partida actual
+	var user = req.session.user_id;
+	var game = req.session.game;
 	
-	// TODO Obtain charsheets for current user
-	
-	// Return data
-	Charsheet.find({}, null, function(err, data){
+	Charsheet.find({}, {}, function(err, data){
 		if (err) console.log('Error reading Charsheet collection');
 		else {
 			res.json(200, data);
@@ -45,12 +15,10 @@ exports.getMyCharsheets = function(req, res){
 };
 
 exports.getCurrentCharsheet = function(req, res){
-	// TODO Check user credentials
+	var user = req.session.user_id;
+	// TODO recuperar informacion de partida para ver cual es la ficha actual
 	
-	// TODO Obtain charsheets for current user
-	
-	// Return data
-	Charsheet.findOne({}, {}, { sort: { 'fecha' : -1 } }, function(err, data){
+	db.getCharsheetsByOwner(user, function(err, data){
 		if (err) console.log('Error reading Charsheet collection');
 		else {
 			res.json(200, data);
@@ -59,8 +27,9 @@ exports.getCurrentCharsheet = function(req, res){
 	});
 };
 
-
-// Devuelve el ultimo tiempo almacenado
-// function getUltimoTiempo(callback) {
-// 	Tiempo.findOne({}, {}, { sort: { 'fecha' : -1 } }, callback);
-// }
+exports.createCharsheet = function(req, res){
+	var user = req.session.user_id;
+	var charsheet = req.body;
+	
+	db.createCharsheet(user, charsheet);
+}

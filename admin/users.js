@@ -2,7 +2,6 @@ var crypto = require('crypto');
 // var mongoose = require('mongoose');
 var db = require('./db');
 
-
 // ******************************************************************************
 // *********************************************************** FUNCIONES PUBLICAS
 
@@ -10,7 +9,7 @@ exports.registerUser = function (req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
 	
-	console.log(req.body);
+// 	console.log(req.body);
 	
 	// Comprueba que el user y el pass no son vacios
 	if(user == null || pass == null) {
@@ -51,7 +50,7 @@ exports.registerUser = function (req, res) {
 				// El usuario no existe, se puede crear
 				db.createNewUser(user, pass);
 				
-				req.session.user_id = 123456;
+				req.session.user_id = thisUser.login;
 				
 				res.json(200, {
 					statusCode: '200',
@@ -84,7 +83,7 @@ exports.login = function(req, res) {
 		if (thisUser != null && thisUser.password == digest) {
 			
 			// TODO obtener user_id
-			req.session.user_id = 123456;
+			req.session.user_id = thisUser.login;
 
 			res.json(200, {
 				statusCode: '200',

@@ -1,26 +1,14 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
-var User = require('./users').User;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-// ******************************************************************************
-// ******************************************************* DEFINICION DE ESQUEMAS
+// Cargar modelos
+var User = require('./models/user').User;
+var Charsheet = require('./models/charsheet').Charsheet;
+var Game = require("./admin/models/game").Game;
 
-var userSchema = new mongoose.Schema({
-	login: String,
-	password: String
-});
-
-// Creacion de los modelos
-var User = mongoose.model('User', userSchema);
-
-// Exportarlos para que esten disponibles en las aplicaciones
-exports.User = User;
-
-// ******************************************************************************
-// ******************************************************* FUNCIONES
-
+// FUNCIONES
 exports.findUserByLogin = function(user, callback) {
 	User.findOne({ 'login': user }, callback);
 }
@@ -40,4 +28,51 @@ exports.createNewUser = function(user, pass) {
 
 exports.listUsers = function(callback) {
 	User.find({}, null, callback);
+}
+
+exports.getCharsheetsByOwner = function(user, callback) {
+	Charsheet.find({owner: user}, {}, { sort: { 'fecha' : -1 } }, callback);
+}
+
+exports.createCharsheet = function(user, cs) {
+	new Charsheet({
+		owner: user,
+		personalInfo: cs.personalInfo,
+		stats: cs.stats
+	}).save();
+}
+
+exports.getCharsheetsByGame = function(game, callback) {
+	// TODO devuelve todas las partidas de la base de datos
+	Charsheet.find({game: game}, {}, function(err, data){
+		if (err) console.log('Error reading Charsheet collection');
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+}
+
+exports.createGame = function(name, master, callback) {
+	var newGame = new Game({
+		name: name,
+		master: master,
+	});
+	newGame.save(callback);
+}
+
+exports.joinGame = function(name, player, callback) {
+	
+	Game.findOne({name: name}, {}, function(err, game){
+		if(err) {
+			callback(err, game);
+		}
+		
+		if(game) {
+			game.players.push(player);
+			game.save();
+		}
+		
+		callback(err, game);
+	});
 }

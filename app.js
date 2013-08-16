@@ -3,6 +3,7 @@ var express = require('express')
 	, users = require('./admin/users')
 	, http = require('http')
 	, charsheet = require('./game/charsheet')
+	, game = require('./game/game')
 	, path = require('path')
 	, app = express()
 	, mongoose = require('mongoose');
@@ -28,12 +29,17 @@ if ('development' == app.get('env')) {
 app.post('/login', users.login);
 app.get('/logout', users.logout); 
 app.post('/user', users.registerUser);
-app.get('/user/list',/* users.checkAuth,*/ users.listUsers);
+app.get('/user/list', users.checkAuth, users.listUsers);
 
-// Game resources
+// Charsheet operations
+app.get('/charsheet/list', users.checkAuth, charsheet.getAllCharsheetsInGame);
 app.get('/charsheet', users.checkAuth, charsheet.getCurrentCharsheet);
-app.get('/charsheet/list', /*users.checkAuth,*/ charsheet.getMyCharsheets);
+app.post('/charsheet', users.checkAuth, charsheet.createCharsheet);
 
+// Game
+app.post('/game/start', users.checkAuth, game.start);
+app.get('/game/join', users.checkAuth, game.join);
+app.get('/game/abandon', users.checkAuth, game.abandon);
 
 
 // Run the party

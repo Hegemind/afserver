@@ -32,14 +32,16 @@ app.post('/user', users.registerUser);
 app.get('/user/list', users.checkAuth, users.listUsers);
 
 // Charsheet operations
-app.get('/charsheet/list', users.checkAuth, charsheet.getAllCharsheetsInGame);
+app.get('/charsheet/list', users.checkAuth, charsheet.listCharsheets);
 app.get('/charsheet', users.checkAuth, charsheet.getCurrentCharsheet);
 app.post('/charsheet', users.checkAuth, charsheet.createCharsheet);
 
 // Game
 app.post('/game/start', users.checkAuth, game.start);
 app.get('/game/join', users.checkAuth, game.join);
-app.get('/game/abandon', users.checkAuth, game.abandon);
+app.get('/game/leave', users.checkAuth, game.leave);
+app.get('/game/end', users.checkAuth, game.end);
+app.get('/game/list', users.checkAuth, game.list);
 
 
 // Run the party

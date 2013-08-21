@@ -76,10 +76,10 @@ function createSomeCharsheets(){
 
 function createUsers() {
 	
+	newUser("marijose", "123");
 	newUser("leandro", "123");
 	newUser("esteban", "abc");
 	newUser("natalia", "123");
-	newUser("marijose", "123");
 	
 	function newUser(login, pass) {
 		var password = crypto.createHash('sha1').update(pass, 'utf8').digest('hex');

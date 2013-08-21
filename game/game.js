@@ -40,9 +40,23 @@ exports.join = function(req, res){
 	});
 };
 
-exports.abandon = function(req, res){
+exports.leave = function(req, res){
 	var user = req.session.user_id;
-	var charsheet = req.body;
 	
-	db.createCharsheet(user, charsheet);
+	
+	// TODO
+}
+
+exports.end = function(req, res){
+	var user = req.session.user_id;
+	
+	
+	// TODO
+}
+
+exports.list = function(req, res){
+	var user = req.session.user_id;
+	
+	
+	// TODO
 }

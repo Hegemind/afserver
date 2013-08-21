@@ -6,7 +6,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 // Cargar modelos
 var User = require('./models/user').User;
 var Charsheet = require('./models/charsheet').Charsheet;
-var Game = require("./admin/models/game").Game;
+var Game = require("./models/game").Game;
 
 // FUNCIONES
 exports.findUserByLogin = function(user, callback) {
@@ -30,8 +30,12 @@ exports.listUsers = function(callback) {
 	User.find({}, null, callback);
 }
 
+exports.listCharsheets = function(user, callback){
+	Charsheet.find({}, {}, callback);
+}
+
 exports.getCharsheetsByOwner = function(user, callback) {
-	Charsheet.find({owner: user}, {}, { sort: { 'fecha' : -1 } }, callback);
+	Charsheet.find({owner: user}, {},/* { sort: { 'fecha' : -1 } },*/ callback);
 }
 
 exports.createCharsheet = function(user, cs) {

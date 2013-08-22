@@ -45,6 +45,10 @@ exports.leave = function(req, res){
 	
 	
 	// TODO
+	res.json(200, {
+		statusCode: '404',
+		statusMessage : 'Not implemented'
+	});
 }
 
 exports.end = function(req, res){
@@ -52,6 +56,10 @@ exports.end = function(req, res){
 	
 	
 	// TODO
+	res.json(200, {
+		statusCode: '404',
+		statusMessage : 'Not implemented'
+	});
 }
 
 exports.list = function(req, res){
@@ -59,4 +67,8 @@ exports.list = function(req, res){
 	
 	
 	// TODO
+	res.json(200, {
+		statusCode: '404',
+		statusMessage : 'Not implemented'
+	});
 }

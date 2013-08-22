@@ -2,10 +2,11 @@ var crypto = require('crypto');
 // var mongoose = require('mongoose');
 var db = require('./db');
 
-// ******************************************************************************
-// *********************************************************** FUNCIONES PUBLICAS
-
-exports.registerUser = function (req, res) {
+/**
+ * Introduce el nuevo usuario en el sistema. Su login debe ser unico.
+ * Ni el login ni el password pueden ser vacios.
+ */
+exports.register = function (req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
 	
@@ -61,6 +62,9 @@ exports.registerUser = function (req, res) {
 	}
 }
 
+/**
+ * El usuario entra en el sistema
+ */
 exports.login = function(req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
@@ -100,6 +104,9 @@ exports.login = function(req, res) {
 	});
 }
 
+/**
+ * El usuario sale del sistema
+ */
 exports.logout = function (req, res) {
 	// Si el usuario esta logueado lo desloguea
 	if(req.session.user_id) {
@@ -118,6 +125,10 @@ exports.logout = function (req, res) {
 	}
 }
 
+/**
+ * Comprueba que el usuario esta autenticado y autorizado para realizar
+ * una operacion protegida en el sistema.
+ */
 exports.checkAuth = function(req, res, next) {
 	// TODO No solo hay que comprobar que existe un user_id, sino que es el correcto
 	if (!req.session.user_id) {
@@ -131,7 +142,10 @@ exports.checkAuth = function(req, res, next) {
 	}
 }
 
-exports.listUsers = function(req, res) {
+/**
+ * Devuelve una lista completa de usuarios en el sistema
+ */
+exports.list = function(req, res) {
 	
 	db.listUsers(function(err, data){
 		if (err){

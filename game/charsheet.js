@@ -1,6 +1,9 @@
 var db = require('../admin/db');
 
-exports.listCharsheets = function(req, res){
+/**
+ * Devuelve todos las fichas del sistema
+ */
+exports.list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
 	var user = req.session.user_id;
 	
@@ -18,10 +21,13 @@ exports.listCharsheets = function(req, res){
 	});
 };
 
-exports.getAllCharsheetsInGame = function(req, res){
+/**
+ * Devuelve las fichas asociadas a una partida
+ */
+exports.listByGame = function(req, res){
 	// TODO Comprobar que usuario logueado es el DJ de la partida actual
 	var user = req.session.user_id;
-	var game = req.session.game;
+	var game = req.session.game_id;
 	
 	Charsheet.find({}, {}, function(err, data){
 		if (err){
@@ -37,7 +43,10 @@ exports.getAllCharsheetsInGame = function(req, res){
 	});
 };
 
-exports.getCurrentCharsheet = function(req, res){
+/**
+ * Devuelve la ficha del usuario actual en la partida actual
+ */
+exports.current = function(req, res){
 	var user = req.session.user_id;
 	// TODO recuperar informacion de partida para ver cual es la ficha actual
 	console.log(user);
@@ -55,7 +64,10 @@ exports.getCurrentCharsheet = function(req, res){
 	});
 };
 
-exports.createCharsheet = function(req, res){
+/**
+ * Crea una nueva ficha
+ */
+exports.new = function(req, res){
 	var user = req.session.user_id;
 	var charsheet = req.body;
 	

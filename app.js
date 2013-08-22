@@ -28,13 +28,13 @@ if ('development' == app.get('env')) {
 // User operations
 app.post('/login', users.login);
 app.get('/logout', users.logout); 
-app.post('/user', users.registerUser);
-app.get('/user/list', users.checkAuth, users.listUsers);
+app.post('/user', users.register);
+app.get('/user/list', users.checkAuth, users.list);
 
 // Charsheet operations
-app.get('/charsheet/list', users.checkAuth, charsheet.listCharsheets);
-app.get('/charsheet', users.checkAuth, charsheet.getCurrentCharsheet);
-app.post('/charsheet', users.checkAuth, charsheet.createCharsheet);
+app.get('/charsheet/list', users.checkAuth, charsheet.list);
+app.get('/charsheet', users.checkAuth, charsheet.current);
+app.post('/charsheet', users.checkAuth, charsheet.new);
 
 // Game
 app.post('/game/start', users.checkAuth, game.start);

@@ -29,19 +29,19 @@ if ('development' == app.get('env')) {
 app.post('/login', users.login);
 app.get('/logout', users.logout); 
 app.post('/user', users.register);
-app.get('/user/list', users.checkAuth, users.list);
+app.get('/user/list', /*users.checkAuth,*/ users.list);
 
 // Charsheet operations
-app.get('/charsheet/list', users.checkAuth, charsheet.list);
-app.get('/charsheet', users.checkAuth, charsheet.current);
-app.post('/charsheet', users.checkAuth, charsheet.new);
+app.get('/charsheet/list'/*, users.checkAuth*/, charsheet.list);
+app.get('/charsheet'/*, users.checkAuth*/, charsheet.current);
+app.post('/charsheet'/*, users.checkAuth*/, charsheet.new);
 
 // Game
-app.post('/game/start', users.checkAuth, game.start);
-app.get('/game/join', users.checkAuth, game.join);
-app.get('/game/leave', users.checkAuth, game.leave);
-app.get('/game/end', users.checkAuth, game.end);
-app.get('/game/list', users.checkAuth, game.list);
+app.post('/game/start'/*, users.checkAuth*/, game.start);
+app.get('/game/join'/*, users.checkAuth*/, game.join);
+app.get('/game/leave'/*, users.checkAuth*/, game.leave);
+app.get('/game/end'/*, users.checkAuth*/, game.end);
+app.get('/game/list'/*, users.checkAuth*/, game.list);
 
 
 // Run the party

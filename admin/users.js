@@ -49,13 +49,20 @@ exports.register = function (req, res) {
 					
 			} else {
 				// El usuario no existe, se puede crear
-				db.createNewUser(user, pass);
+				db.createNewUser(user, pass, function(err){
+					if(err) {
+						res.json(200, {
+							statusCode: '401',
+							statusMessage : 'Could not register user'
+						});
+					}
+					
+					req.session.user_id = thisUser.login;
 				
-				req.session.user_id = thisUser.login;
-				
-				res.json(200, {
-					statusCode: '200',
-					statusMessage : 'User created successfully'
+					res.json(200, {
+						statusCode: '200',
+						statusMessage : 'User created successfully'
+					});
 				});
 			}
 		});

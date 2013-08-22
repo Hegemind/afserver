@@ -13,7 +13,7 @@ exports.findUserByLogin = function(user, callback) {
 	User.findOne({ 'login': user }, callback);
 }
 
-exports.createNewUser = function(user, pass) {
+exports.createNewUser = function(user, pass, callback) {
 	// Calcula resumen SHA1 del password
 	var sha = crypto.createHash('sha1');
 	sha.update(pass, 'utf8');
@@ -23,7 +23,7 @@ exports.createNewUser = function(user, pass) {
 	new User({
 		login: user,
 		password: password
-	}).save();
+	}).save(callback);
 }
 
 exports.listUsers = function(callback) {

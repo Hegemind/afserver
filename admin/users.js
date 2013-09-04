@@ -10,7 +10,7 @@ exports.register = function (req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
 	
-// 	console.log(req.body);
+	//console.log(req.body);
 	
 	// Comprueba que el user y el pass no son vacios
 	if(user == null || pass == null) {
@@ -76,7 +76,8 @@ exports.login = function(req, res) {
 	var user = req.body.user;
 	var pass = req.body.password;
 	
-// 	console.log(req.body);
+	console.log(req.body);
+	console.log("Content-type:"+req.get("Content-type"));
 	
 	// Busca el usuario en la base de datos
 	db.findUserByLogin(user, function (err, thisUser) {
@@ -90,7 +91,7 @@ exports.login = function(req, res) {
 		}
 		
 		// Calcula resumen SHA1 del password
-		var digest = crypto.createHash('sha1').update(""+pass, 'utf8').digest('hex');
+		var digest = crypto.createHash('sha1').update(pass+"", 'utf8').digest('hex');
 		
 		// Comprueba que el usuario existe y que el password es correcto
 		if (thisUser != null && thisUser.password == digest) {

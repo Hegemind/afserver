@@ -46,7 +46,11 @@ app.get('/api/game/leave'/*, users.checkAuth*/, game.leave);
 app.get('/api/game/end'/*, users.checkAuth*/, game.end);
 app.get('/api/game/list'/*, users.checkAuth*/, game.list);
 
-app.get('/', routes.index);
+// Start screen
+app.get('/start', routes.start);
+app.get('/', users.checkAuthRedirect, routes.index);
+
+// Login screen
 app.get('/login', routes.login);
 
 // Run the party

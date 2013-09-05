@@ -8,16 +8,27 @@ $(document).ready(function() {
 		$.ajax({
 			url: "/api/login/",
 			type: "POST",
-// 			data: $('#loginForm').serialize()
-			data: {user: "leandro", password: "123n"}
-			//contentType: 'application/x-www-form-urlencoded'
+			data: $('#loginForm').serialize()
+// 			data: {user: "leandro", password: "123"}
 		}).done(function(data) {
-			var statusCode = data.statusCode;
+			
+			var code = data.statusCode;
 			var msg = data.statusMessage
 			
+// 			alert(code);
+			
+			if(code == 200)
+				// Si el login fue correcto ir a la raiz
+				window.location.replace("/");
+			else {
+				// Si el login no fue correcto mostrar mensaje de error
+				$('#errorAlert').text(msg);
+				$('#errorAlert').show();
+			}
+			
 		}).fail(function(data) {
+			$('#errorAlert').text("Error connecting to the server");
 			$('#errorAlert').show();
-			//alert("Couldn't log in :(\n"+JSON.stringify(data));
 		});
 		return false;
 	}

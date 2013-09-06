@@ -1,6 +1,16 @@
 extends layout
 
 block content
-  h1 Hi, #{username}!
-  p Welcome to Alterfutura
-  p You are not #{username}? Please <a href="/logout">log out</a>.
+	.container
+		h1 Hi, #{username}!
+		p Welcome to Alterfutura
+		p You are not #{username}? Please <a href="/logout">log out</a>.
+
+		.row
+			each val in section
+				.col-sm-4.col-md-3.col-lg-2
+					a(href="#{val.link}")
+						.thumbnail
+							img(src="#{val.image}")
+							.caption
+								h3 #{val.name}

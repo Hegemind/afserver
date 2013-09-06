@@ -1,0 +1,7 @@
+.thumbnail {
+/* 	border-color: transparent; */
+}
+
+.thumbnail:hover {
+    border: 4px solid #d0d0d0;
+}

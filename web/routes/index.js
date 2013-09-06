@@ -20,7 +20,7 @@ exports.index = function(req, res){
 			},
 			{
 				name: "Seccion 3",
-				link: "/section4",
+				link: "/section3",
 				image: "images/placeholder.png"
 			}
 		]

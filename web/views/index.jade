@@ -1,5 +1,8 @@
 extends layout
 
+block htmlhead
+	link(rel='stylesheet', href='/stylesheets/index.css')
+
 block content
 	.container
 		h1 Hi, #{username}!

@@ -1,17 +1,16 @@
 #frame {
+	/* Imagen central */
 	position: relative;
 }
 
 #background {
+/* 	Se ajusta al contenedor */
 	width: 100%
 }
 
 #welcomeBox {
+	/* Hace que flote sobre la imagen central definida en frame */
 	position: absolute;
 	bottom:4%;
 	right: 10%;
-/* 	top: 20%; */
-/* 	width:100%; */
-	text-align:center
-	
 }

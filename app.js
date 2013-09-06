@@ -46,13 +46,16 @@ app.get('/api/game/leave'/*, users.checkAuth*/, game.leave);
 app.get('/api/game/end'/*, users.checkAuth*/, game.end);
 app.get('/api/game/list'/*, users.checkAuth*/, game.list);
 
-// Start screen
-app.get('/start', routes.start);
+// Web requests
 app.get('/', users.checkAuthRedirect, routes.index);
-
-// Login screen
+app.get('/start', routes.start);
 app.get('/login', routes.login);
 app.get('/logout', routes.logout);
+app.get('/charsheets', routes.sections.charsheets);
+app.get('/users', routes.sections.users);
+app.get('/games', routes.sections.games);
+
+
 
 // Run the party
 http.createServer(app).listen(app.get('port'), function(){

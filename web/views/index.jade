@@ -5,15 +5,16 @@ block htmlhead
 
 block content
 	.container
-		h1 Hi, #{username}!
-		p Welcome to Alterfutura
-		p You are not #{username}? Please <a href="/logout">log out</a>.
-
+		.panel
+			h1 Hello!
+			p Welcome to Alterfutura, #{username}.
+			small You are not #{username}? <a href="/logout">Get the heck out!</a>
+			
 		.row
 			each val in section
-				.col-sm-4.col-md-3.col-lg-2
+				.col-xs-6.col-sm-4.col-md-3.col-lg-2
 					a(href="#{val.link}")
 						.thumbnail
 							img(src="#{val.image}")
 							.caption
-								h3 #{val.name}
+								small #{val.name}

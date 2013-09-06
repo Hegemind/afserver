@@ -1,5 +1,6 @@
 .thumbnail {
-/* 	border-color: transparent; */
+	border-color: 4px solid transparent;
+	text-align: center;
 }
 
 .thumbnail:hover {

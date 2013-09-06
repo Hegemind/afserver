@@ -1,3 +1,5 @@
+exports.sections = require('./sections');
+
 exports.start = function(req, res){
 	res.render('start');
 };
@@ -8,21 +10,22 @@ exports.index = function(req, res){
 		username: username,
 		section : [
 			{
-				name: "Seccion 1",
-				link: "/section1",
+				name: "Usuarios",
+				link: "/users",
 				image: "images/placeholder.png"
 			},
 			{
-				name: "Seccion 2",
-				link: "/section2",
+				name: "Fichas",
+				link: "/charsheets",
 				image: "images/placeholder.png"
 				
 			},
 			{
-				name: "Seccion 3",
-				link: "/section3",
+				name: "Juegos",
+				link: "/games",
 				image: "images/placeholder.png"
 			}
+			
 		]
 	});
 };
@@ -34,4 +37,3 @@ exports.login = function(req, res){
 exports.logout = function(req, res){
 	res.render('logout');
 };
-

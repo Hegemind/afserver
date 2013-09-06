@@ -1,17 +1,17 @@
-
-/*
- * GET home page.
- */
-
 exports.start = function(req, res){
-  res.render('index', { title: 'Welcome!' });
+	res.render('start');
 };
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Logged in' });
+	var username = req.session.user_id;
+	res.render('index', { username: username });
 };
 
 exports.login = function(req, res){
-  res.render('login', { title: 'Express' });
+	res.render('login');
+};
+
+exports.logout = function(req, res){
+	res.render('logout');
 };
 

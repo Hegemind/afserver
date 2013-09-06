@@ -52,6 +52,7 @@ app.get('/', users.checkAuthRedirect, routes.index);
 
 // Login screen
 app.get('/login', routes.login);
+app.get('/logout', routes.logout);
 
 // Run the party
 http.createServer(app).listen(app.get('port'), function(){

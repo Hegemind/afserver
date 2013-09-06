@@ -1,0 +1,17 @@
+#frame {
+	position: relative;
+}
+
+#background {
+	width: 100%
+}
+
+#welcomeBox {
+	position: absolute;
+	bottom:4%;
+	right: 10%;
+/* 	top: 20%; */
+/* 	width:100%; */
+	text-align:center
+	
+}

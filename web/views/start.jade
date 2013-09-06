@@ -1,6 +1,15 @@
 extends layout
 
+block htmlhead
+	link(rel='stylesheet', href='/stylesheets/start.css')
+	
 block content
-  h1 Hi there!
-  p Welcome to AlterFutura
-  p Please <a href="/login">log in</a> to contiue
+	#frame.container
+		img#background(src="images/background.jpg")
+		
+		#welcomeBox.panel.panel-default
+			.panel-heading 
+				h1 Welcome to AlterFutura
+			.panel-body
+				p Hi there!
+				p Please <a href="/login">log in</a> to contiue

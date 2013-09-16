@@ -47,13 +47,17 @@ app.get('/api/game/end'/*, users.checkAuth*/, game.end);
 app.get('/api/game/list'/*, users.checkAuth*/, game.list);
 
 // Web requests
-app.get('/', users.checkAuthRedirect, routes.index);
+app.get('/', users.checkAuthRedirect, routes.sections.home);
+app.get('/profile', users.checkAuthRedirect, routes.sections.profile);
+app.get('/charsheets', users.checkAuthRedirect, routes.sections.charsheets);
+app.get('/campaigns', users.checkAuthRedirect, routes.sections.campaigns);
+
 app.get('/start', routes.start);
 app.get('/login', routes.login);
 app.get('/logout', routes.logout);
-app.get('/charsheets', routes.sections.charsheets);
+
 app.get('/users', routes.sections.users);
-app.get('/games', routes.sections.games);
+
 
 
 

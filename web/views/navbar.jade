@@ -1,25 +1,23 @@
-.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
-	a.navbar-brand(href="#") Hegemon
+.navbar.navbar-inverse(role="navigation")
+	a.navbar-brand(href="/") Hegemon
 	ul.nav.navbar-nav
-		li.active
-			a(href="#") Home
-		li
-			a(href="#") Profile
-		li
-			a(href="#") Charsheets
-		li
-			a(href="#") Campaigns
-	
+		each val in section
+			- if(val.active)
+				li.active
+					a(href="#{val.link}") #{val.name}
+			- else
+				li
+					a(href="#{val.link}") #{val.name}
+			
 	ul.nav.navbar-nav.navbar-right
 		li.dropdown
-				a.dropdown-toggle(href="", data-toggle="dropdown") Tools <b class="caret"></b>
-				ul.dropdown-menu
-					li
-						a(href="#") Link
-					li
-						a(href="#") Link
-
-	.col-xs-4.col-sm-4.col-md-4.col-lg-4.navbar-right
+			a.dropdown-toggle(href="", data-toggle="dropdown") Tools <b class="caret"></b>
+			ul.dropdown-menu
+				li
+					a(href="#") Tool 1
+				li
+					a(href="#") Tool 2
+	.col-xs-3.col-sm-3.col-md-3.col-lg-3.navbar-right
 		form.navbar-form.input-group(role="search")
 			input.form-control(type="text", placeholder="Search")
 			.span.input-group-btn

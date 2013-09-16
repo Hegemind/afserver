@@ -1,5 +1,28 @@
 extends ../index
 
 block section
-	.panel
-		p Charsheets Section!!!
+	.row
+		h1.col-xs-6.col-sm-6.col-md-6.col-lg-6 Charsheets
+		p.col-xs-6.col-sm-6.col-md-6.col-lg-6 You have X charsheets for Y different games.
+		
+	.btn-group
+		button.btn.btn-default All
+		button.btn.btn-default D&D4
+		button.btn.btn-default Pathfinder
+		button.btn.btn-default Vampire
+	
+	.table-responsive
+		table.table.table-striped.table-hover
+			thead
+				tr
+					th Name
+					th Description
+					th Game
+					th Since
+					th Current campaign
+					th Actions
+			tbody#table_data
+			
+	
+	
+	script(src="/javascripts/charsheets.js")

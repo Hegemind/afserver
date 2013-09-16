@@ -55,6 +55,7 @@ app.get('/campaigns', users.checkAuthRedirect, routes.sections.campaigns);
 app.get('/start', routes.start);
 app.get('/login', routes.login);
 app.get('/logout', routes.logout);
+app.get('/error', routes.error);
 
 app.get('/users', routes.sections.users);
 

@@ -11,3 +11,7 @@ exports.login = function(req, res){
 exports.logout = function(req, res){
 	res.render('logout');
 };
+
+exports.error = function(req, res){
+	res.render('error');
+};

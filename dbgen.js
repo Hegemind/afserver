@@ -38,36 +38,54 @@ function resetDB(){
 function createSomeCharsheets(){
 	
 	new Charsheet({
-		owner: "leandro",
-		personalInfo:{
-			name: "My Full Name",
-			age: 20,
-			gender: "Male",
-			race: "Human",
-			language: "Klingon"
+		propietario: "leandro",
+		descripcion: "Humano barbaro de poco nivel",
+		tipo: "PJ",
+		informacion:{
+			nombre: "Oreganal",
+			alineamiento: "chachi",
+			nivel: 1,
+			edad: 20,
+			raza: "Human",
+			clase: "barbaro",
+			deidad: "ninguna",
+			altura: 205,
+			peso: 120,
+			sexo: "Male",
+			idioma: "Klingon"
 		},
-		stats: {
-			ST: 5,
-			DX: 6,
-			IQ: 1,
-			HT: 4
+		atributos: {
+			fuerza: 5,
+			constitucion: 6,
+			inteligencia: 1,
+			carisma: 4,
+			sabiduria: 4
 		}
 	}).save();
 	
 	new Charsheet({
-		owner: "esteban",
-		personalInfo:{
-			name: "Mi nombre completo",
-			age: 40,
-			gender: "Female",
-			race: "Elf",
-			language: "Elfish"
+		propietario: "esteban",
+		descripcion: "Elfa anciana arquera",
+		tipo: "PJ",
+		informacion:{
+			nombre: "Baby Yoyo",
+			alineamiento: "no chachi",
+			nivel: 2,
+			edad: 3400,
+			raza: "Elfo",
+			clase: "Ranger",
+			deidad: "ninguna",
+			altura: 195,
+			peso: 95,
+			sexo: "Female",
+			idioma: "Elfico"
 		},
-		stats: {
-			ST: 4,
-			DX: 3,
-			IQ: 4,
-			HT: 5
+		atributos: {
+			fuerza: 5,
+			constitucion: 6,
+			inteligencia: 1,
+			carisma: 4,
+			sabiduria: 4
 		}
 	}).save();
 	

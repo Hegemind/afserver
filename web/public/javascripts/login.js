@@ -34,22 +34,6 @@ $(document).ready(function() {
 	}
 	
 	$('#loginButton').click(sendLogin); 
-	
-	
-	
-// 	$("#loginForm").submit( function () {    
-// 		$.ajax({
-// 			url: '/api/login',
-// 			type: 'post',
-// 			dataType: 'json'
-// 		}).done(function(data) {
-// 				var json = JSON.parse(data)
-// 				//JSON.stringify()
-// 				alert("hola");
-// 				
-// 		});
-// 		
-// 	});  
 });
 
 

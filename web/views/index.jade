@@ -5,25 +5,7 @@ block htmlhead
 
 block content
 	.container
-		.navbar.navbar-default.navbar-fixed-top(role="navigation")
-			ul.nav.navbar-nav
-				li.active
-					a(href="#") Link
-				li
-					a(href="#") Link
-				li.dropdown
-					a.dropdown-toggle(href="", data-toggle="dropdown") Dropdown <b class="caret"></b>
-					ul.dropdown-menu
-						li
-							a(href="#") Link
-						li
-							a(href="#") Link
-							
-			form.navbar-form.navbar-left(role="search")
-				.form-group
-					input.form-control(type="text", placeholder="Search")
-				button.btn.btn-default(type="submit") Go
-			
+		include navbar
 		
 		.panel
 			h1 Hello!
@@ -38,3 +20,4 @@ block content
 							img(src="#{val.image}")
 							.caption
 								small #{val.name}
+

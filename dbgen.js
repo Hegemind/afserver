@@ -150,5 +150,14 @@ function createGames() {
 	g.players.push("natalia");
 	g.save();
 	
+	var h = new Game({
+		name: "No es otra campaña mas",
+		master: "esteban",
+		gameSystem: "Storytelling"
+	});
+	h.players.push("marjiose");
+	h.players.push("natalia");
+	h.save();
+	
 	console.log("Games created");
 }

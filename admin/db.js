@@ -48,13 +48,13 @@ exports.createCharsheet = function(user, cs) {
 
 exports.getCharsheetsByGame = function(game, callback) {
 	// TODO devuelve todas las partidas de la base de datos
-	Charsheet.find({game: game}, {}, function(err, data){
-		if (err) console.log('Error reading Charsheet collection');
-		else {
-			res.json(200, data);
-			res.end();
-		}
-	});
+	Charsheet.find({game: game}, {}, callback);
+}
+
+exports.listCampaignsByUser = function(user, callback) {
+	// Encuentra partidas en las que el usuario participe como 
+	// jugador o master
+	Game.find({ $or: [{players: {$all: [user]}}, {master: user}]}, {}, callback);
 }
 
 exports.createGame = function(name, master, callback) {

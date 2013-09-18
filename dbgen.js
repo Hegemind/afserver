@@ -109,20 +109,41 @@ function createUsers() {
 	
 	console.log("Users created");
 }
+	
+// 	Game {
+// 		name: String,
+// 		master: String,
+// 		players: [String],
+// 		gameSystem: String,
+// 		settings: {
+// 			state: { type: String, enum: states, default: "open" },
+// 			public: { type: Boolean, default: "true" },
+// 			customRules: {
+// 				skills: [String],
+// 				objects: [String],
+// 				States: [String]
+// 			}
+// 		}
+// 	}
 
 function createGames() {
+	
+	
 	var f = new Game({
-		name: "Mi primer juego",
+		name: "Nuestra primera aventura en AlterFutura",
 		master: "esteban",
+		gameSystem: "d20",
 	});
+	
 	f.players.push("leandro");
 	f.players.push("marjiose");
 	f.players.push("natalia");
 	f.save();
 	
 	var g = new Game({
-		name: "Aventuras SL",
+		name: "Desventuras de un aficionado",
 		master: "leandro",
+		gameSystem: "d20/StarWars"
 	});
 	g.players.push("esteban");
 	g.players.push("marjiose");

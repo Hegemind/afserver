@@ -6,7 +6,7 @@ $(document).ready(function() {
 		fillTable(data);
 	})
 	.fail(function(data) {
-		//window.location.replace("/error");
+		window.location.replace("/error");
 	});
 	return false;
 	
@@ -28,6 +28,10 @@ $(document).ready(function() {
 			r[++j] = '</td><td><div class="btn-group"><a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-chevron-down"></i></a><ul class="dropdown-menu"> <li><a href="#">Copiar</a> </li><li><a href="#">Borrar</a> </li><li><a href="#">Imprimir</a> </li></ul></div>';
 			r[++j] = '</td></tr>';
 		}
+		var infoNumberCharsheets = "You have "+data.length+" charsheets for Y different games.";
+		$('#infoNumberCharsheets')[0].innerHTML = infoNumberCharsheets;
+		
+		
 		$('#table_data')[0].innerHTML = r.join(''); 
 	}
 });

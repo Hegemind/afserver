@@ -41,6 +41,7 @@ function createSomeCharsheets(){
 		propietario: "leandro",
 		descripcion: "Humano barbaro de poco nivel",
 		tipo: "PJ",
+		partida: "Nuestra primera aventura en AlterFutura",
 		informacion:{
 			nombre: "Oreganal",
 			alineamiento: "chachi",
@@ -67,6 +68,7 @@ function createSomeCharsheets(){
 		propietario: "esteban",
 		descripcion: "Elfa anciana arquera",
 		tipo: "PJ",
+		partida: "Desventuras de un aficionado",
 		informacion:{
 			nombre: "Baby Yoyo",
 			alineamiento: "no chachi",
@@ -133,6 +135,9 @@ function createGames() {
 		name: "Nuestra primera aventura en AlterFutura",
 		master: "esteban",
 		gameSystem: "d20",
+		settings: {
+			state: "started"
+		}
 	});
 	
 	f.players.push("leandro");
@@ -143,7 +148,10 @@ function createGames() {
 	var g = new Game({
 		name: "Desventuras de un aficionado",
 		master: "leandro",
-		gameSystem: "d20/StarWars"
+		gameSystem: "d20/StarWars",
+		settings: {
+			state: "open"
+		}
 	});
 	g.players.push("esteban");
 	g.players.push("marjiose");
@@ -153,7 +161,10 @@ function createGames() {
 	var h = new Game({
 		name: "No es otra campaña mas",
 		master: "esteban",
-		gameSystem: "Storytelling"
+		gameSystem: "Storytelling",
+		settings: {
+			state: "open"
+		}
 	});
 	h.players.push("marjiose");
 	h.players.push("natalia");

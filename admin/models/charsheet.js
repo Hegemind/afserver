@@ -4,6 +4,7 @@ exports.Charsheet = mongoose.model('Charsheet', new mongoose.Schema({
 	propietario: String,
 	descripcion: String,
 	tipo: String,
+	partida: String,
 	informacion: {
 		nombre: String,
 		alineamiento: String,

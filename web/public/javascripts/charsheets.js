@@ -22,13 +22,13 @@ $(document).ready(function() {
 			r[++j] = '</td><td>';
 			r[++j] = data[key].since;
 			r[++j] = '</td><td>';
-			r[++j] = data[key].currentcampaign;
+			r[++j] = data[key].partida;
 			
 			// Add option button at the end of the row
 			r[++j] = '</td><td><div class="btn-group"><a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-chevron-down"></i></a><ul class="dropdown-menu"> <li><a href="#">Copiar</a> </li><li><a href="#">Borrar</a> </li><li><a href="#">Imprimir</a> </li></ul></div>';
 			r[++j] = '</td></tr>';
 		}
-		var infoNumberCharsheets = "You have "+data.length+" charsheets for Y different games.";
+		var infoNumberCharsheets = "You have "+data.length+" charsheets.";
 		$('#infoNumberCharsheets')[0].innerHTML = infoNumberCharsheets;
 		
 		

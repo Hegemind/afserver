@@ -3,7 +3,7 @@ extends ../index
 block section
 	.row
 		h1.col-xs-6.col-sm-6.col-md-6.col-lg-6 Campaigns
-		p#infoNumberCharsheets.col-xs-6.col-sm-6.col-md-6.col-lg-6 
+		p#infoNumberGames.col-xs-6.col-sm-6.col-md-6.col-lg-6 
 		
 	.row
 		.col-xs-6.col-sm-6.col-md-6.col-lg-6
@@ -20,13 +20,12 @@ block section
 			thead
 				tr
 					th Name
-					th Description
-					th Game
-					th Since
-					th Current campaign
-					th Actions
+					th Master
+					th Game System
+					th Players
+					th State
 			tbody#table_data
 			
 	
 	
-	script(src="/javascripts/charsheets.js")
+	script(src="/javascripts/campaigns.js")

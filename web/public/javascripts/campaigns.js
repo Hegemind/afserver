@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$.ajax("/api/charsheet/list/")
+	$.ajax("/api/game/list/")
 	.done(function(data) {
 		// Renderizar pagina con los datos
 		fillTable(data);
@@ -14,22 +14,19 @@ $(document).ready(function() {
 		var r = new Array(), j = -1;
 		for (var key = 0, size = data.length; key < size; key++){
 			r[++j] ='<tr><td>';
-			r[++j] = data[key].informacion.nombre;
+			r[++j] = data[key].name;
 			r[++j] = '</td><td>';
-			r[++j] = data[key].descripcion;
+			r[++j] = data[key].master;
 			r[++j] = '</td><td>';
-			r[++j] = data[key].game;
+			r[++j] = data[key].gameSystem;
 			r[++j] = '</td><td>';
-			r[++j] = data[key].since;
+			r[++j] = data[key].players;
 			r[++j] = '</td><td>';
-			r[++j] = data[key].currentcampaign;
-			
-			// Add option button at the end of the row
-			r[++j] = '</td><td><div class="btn-group"><a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-chevron-down"></i></a><ul class="dropdown-menu"> <li><a href="#">Copiar</a> </li><li><a href="#">Borrar</a> </li><li><a href="#">Imprimir</a> </li></ul></div>';
+			r[++j] = data[key].settings.state;
 			r[++j] = '</td></tr>';
 		}
-		var infoNumberCharsheets = "You have "+data.length+" charsheets for Y different games.";
-		$('#infoNumberCharsheets')[0].innerHTML = infoNumberCharsheets;
+		var infoNumberGames = "You have "+data.length+" games going on.";
+		$('#infoNumberGames')[0].innerHTML = infoNumberGames;
 		
 		
 		$('#table_data')[0].innerHTML = r.join(''); 

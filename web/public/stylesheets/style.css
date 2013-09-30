@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+.charsheet-row .row-buttons {
+	visibility: hidden;
+}
+
+.charsheet-row:hover .row-buttons {
+	visibility: visible;
+}

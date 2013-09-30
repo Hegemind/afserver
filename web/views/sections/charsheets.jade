@@ -2,9 +2,11 @@ extends ../index
 
 block section
 	.row
-		h1.col-xs-6.col-sm-6.col-md-6.col-lg-6 Charsheets
-		p#infoNumberCharsheets.col-xs-6.col-sm-6.col-md-6.col-lg-6 
-		
+		h1.col-md-8 Charsheets
+	.row
+		button.btn.btn-success(type="button")
+			span.glyphicon.glyphicon-plus
+			span Create new character
 	.row
 		.col-xs-6.col-sm-6.col-md-6.col-lg-6
 			.btn-group
@@ -26,7 +28,8 @@ block section
 					th Current campaign
 					th Actions
 			tbody#table_data
-			
+		
+		p#infoNumberCharsheets
 	
 	
 	script(src="/javascripts/charsheets.js")

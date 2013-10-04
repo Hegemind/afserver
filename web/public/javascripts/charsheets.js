@@ -1,5 +1,10 @@
 $(document).ready(function() {
 	
+	$('#myTab a').click(function (e) {
+		e.preventDefault()
+		$(this).tab('show')
+	});
+	
 	$.ajax("/api/charsheet/list/")
 	.done(function(data) {
 		// Renderizar pagina con los datos
@@ -15,6 +20,8 @@ $(document).ready(function() {
 		for (var key = 0, size = data.length; key < size; key++){
 			r[++j] ='<tr><td>';
 			r[++j] = data[key].informacion.nombre;
+			r[++j] = '</td><td>';
+			r[++j] = data[key].tipo;
 			r[++j] = '</td><td>';
 			r[++j] = data[key].descripcion;
 			r[++j] = '</td><td>';

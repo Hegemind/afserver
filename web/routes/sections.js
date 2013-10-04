@@ -4,26 +4,20 @@ exports.home = function(req, res){
 		username: username,
 		section : [
 			{
-				active: true,
-				name: "Home",
-				link: "/",
-				image: "images/placeholder.png"
-			},
-			{
 				name: "Profile",
 				link: "/profile",
-				image: "images/placeholder.png"
+				image: "images/final-dice1.png"
 			},
 			{
 				name: "Charsheets",
 				link: "/charsheets",
-				image: "images/placeholder.png"
+				image: "images/diablo3-character-profile.jpg"
 				
 			},
 			{
 				name: "Campaigns",
 				link: "/campaigns",
-				image: "images/placeholder.png"
+				image: "images/esteria.jpg"
 			}
 		]
 	});
@@ -35,26 +29,20 @@ exports.profile = function(req, res){
 		username: username,
 		section : [
 			{
-				name: "Home",
-				link: "/",
-				image: "images/placeholder.png"
-			},
-			{
-				active: true,
 				name: "Profile",
 				link: "/profile",
-				image: "images/placeholder.png"
+				image: "images/final-dice1.png"
 			},
 			{
 				name: "Charsheets",
 				link: "/charsheets",
-				image: "images/placeholder.png"
+				image: "images/diablo3-character-profile.jpg"
 				
 			},
 			{
 				name: "Campaigns",
 				link: "/campaigns",
-				image: "images/placeholder.png"
+				image: "images/esteria.jpg"
 			}
 		]
 	});
@@ -64,26 +52,20 @@ exports.charsheets = function(req, res){
 	res.render('sections/charsheets', {
 		section : [
 			{
-				name: "Home",
-				link: "/",
-				image: "images/placeholder.png"
-			},
-			{
 				name: "Profile",
 				link: "/profile",
-				image: "images/placeholder.png"
+				image: "images/final-dice1.png"
 			},
 			{
-				active: true,
 				name: "Charsheets",
 				link: "/charsheets",
-				image: "images/placeholder.png"
+				image: "images/diablo3-character-profile.jpg"
 				
 			},
 			{
 				name: "Campaigns",
 				link: "/campaigns",
-				image: "images/placeholder.png"
+				image: "images/esteria.jpg"
 			}
 		]
 	});
@@ -93,26 +75,20 @@ exports.campaigns = function(req, res){
 	res.render('sections/campaigns', {
 		section : [
 			{
-				name: "Home",
-				link: "/",
-				image: "images/placeholder.png"
-			},
-			{
 				name: "Profile",
 				link: "/profile",
-				image: "images/placeholder.png"
+				image: "images/final-dice1.png"
 			},
 			{
 				name: "Charsheets",
 				link: "/charsheets",
-				image: "images/placeholder.png"
+				image: "images/diablo3-character-profile.jpg"
 				
 			},
 			{
-				active: true,
 				name: "Campaigns",
 				link: "/campaigns",
-				image: "images/placeholder.png"
+				image: "images/esteria.jpg"
 			}
 		]
 	});

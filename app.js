@@ -38,6 +38,7 @@ app.get('/api/user/list', /*users.checkAuth,*/ users.list);
 app.get('/api/charsheet/list'/*, users.checkAuth*/, charsheet.list);
 app.get('/api/charsheet'/*, users.checkAuth*/, charsheet.current);
 app.post('/api/charsheet'/*, users.checkAuth*/, charsheet.new);
+app.delete('/api/charsheet'/*, users.checkAuth*/, charsheet.delete);
 
 // Game
 app.post('/api/game/start'/*, users.checkAuth*/, game.start);

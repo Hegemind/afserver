@@ -23,7 +23,6 @@ function newCharsheetModal_save() {
 	// Validar y enviar a base de datos
 	if(validate() === "") {
 		persist();
-		newCharsheetModal_dismiss();
 	}
 	
 	function validate(){
@@ -42,7 +41,21 @@ function newCharsheetModal_save() {
 	}
 	
 	function persist(){
-		
+		$.ajax({
+			url: "/api/charsheet/",
+			type: "POST",
+			data: $('#characterForm').serialize()
+		})
+		.done(function(data) {
+			if(data.statusCode !== "200"){
+				alert(data.statusCode);
+			} else {
+				newCharsheetModal_dismiss();
+			}
+		})
+		.fail(function(data) {
+			window.location.replace("/error");
+		});
 	}
 }
 

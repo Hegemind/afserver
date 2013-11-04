@@ -3,7 +3,7 @@ var db = require('../admin/db');
 /**
  * Devuelve todos las fichas del sistema
  */
-exports.list = function(req, res){
+list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
 	var user = req.session.user_id;
 	
@@ -20,6 +20,8 @@ exports.list = function(req, res){
 		}
 	});
 };
+
+exports.list = list;
 
 /**
  * Devuelve las fichas asociadas a una partida
@@ -68,8 +70,41 @@ exports.current = function(req, res){
  * Crea una nueva ficha
  */
 exports.new = function(req, res){
-	var user = req.session.user_id;
 	var charsheet = req.body;
-	
-	db.createCharsheet(user, charsheet);
+	db.createCharsheet(charsheet, function(err){
+		if(err) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error saving character'
+			});
+		} else {
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'The character was saved correctly',
+				body: charsheet
+			});
+		}
+	});
+}
+
+exports.delete = function(req, res){
+	var character = req.body.name;
+	console.log("body: "+req.body);
+	if(typeof character == "undefined"){
+		res.json(200, {
+			statusCode: '401',
+			statusMessage : 'Could not delete the character'
+		});
+	} else {
+		db.deleteCharsheet(character, function(err){
+			if(err) {
+				res.json(200, {
+					statusCode: '401',
+					statusMessage : 'Error deleting character'
+				});
+			} else {
+				list(req, res);
+			}
+		});
+	}
 }

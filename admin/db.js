@@ -38,12 +38,23 @@ exports.getCharsheetsByOwner = function(user, callback) {
 	Charsheet.find({owner: user}, {},/* { sort: { 'fecha' : -1 } },*/ callback);
 }
 
-exports.createCharsheet = function(user, cs) {
+exports.createCharsheet = function(cs, callback) {
 	new Charsheet({
-		owner: user,
-		personalInfo: cs.personalInfo,
-		stats: cs.stats
-	}).save();
+		propietario: cs.propietario,
+		descripcion: cs.descripcion,
+		tipo: cs.tipo,
+		partida: "",
+		informacion: {
+			nombre: cs.nombre,
+			nivel: 0,
+			edad: cs.edad,
+			raza: cs.raza,
+		},
+	}).save(callback);
+}
+
+exports.deleteCharsheet = function(name, callback) {
+	Charsheet.find({ name: name}).remove(callback);
 }
 
 exports.getCharsheetsByGame = function(game, callback) {

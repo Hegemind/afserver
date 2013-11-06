@@ -34,10 +34,19 @@ app.get('/api/logout', users.logout);
 app.post('/api/user', users.register);
 app.get('/api/user/list', /*users.checkAuth,*/ users.list);
 
-// Charsheet operations
-app.get('/api/charsheet/list'/*, users.checkAuth*/, charsheet.list);
-app.get('/api/charsheet'/*, users.checkAuth*/, charsheet.current);
-app.post('/api/charsheet'/*, users.checkAuth*/, charsheet.new);
+// Charsheet CRUD
+app.post('/charsheet/:id', charsheet.create);
+app.get('/charsheet/:id', charsheet.get);
+// TODO
+// app.put('/charsheet/:id', charsheet.update);
+// app.delete('/charsheet/:id', charsheet.delete);
+
+// Get all charsheets from a player
+app.get('/user/:userid/charsheets', charsheet.list);
+
+// Get player charsheet for a game
+// app.get('/game/:gameid/charsheet'/*, users.checkAuth*/, charsheet.current);
+
 
 // Game
 app.post('/api/game/start'/*, users.checkAuth*/, game.start);

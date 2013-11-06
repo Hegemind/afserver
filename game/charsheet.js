@@ -46,15 +46,17 @@ exports.listByGame = function(req, res){
 /**
  * Devuelve la ficha del usuario actual en la partida actual
  */
-exports.current = function(req, res){
-	var user = req.session.user_id;
-	// TODO recuperar informacion de partida para ver cual es la ficha actual
-	console.log(user);
-	db.getCharsheetsByOwner(user, function(err, data){
-		if (err) {
+exports.get = function(req, res){
+	var name = req.params.id;
+	console.log("name: "+name);
+// 	db.getCharsheetsByOwner(user, function(err, data){
+	db.getCharsheetsByName(name, function(err, data){
+		console.log("\ndata: " + data);
+		if (!data || err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets'
+				statusMessage : 'Error reading charsheet ' + name,
+				data : data
 			});
 		}
 		else {
@@ -67,7 +69,7 @@ exports.current = function(req, res){
 /**
  * Crea una nueva ficha
  */
-exports.new = function(req, res){
+exports.create = function(req, res){
 	var user = req.session.user_id;
 	var charsheet = req.body;
 	

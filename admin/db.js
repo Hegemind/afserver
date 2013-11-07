@@ -34,12 +34,8 @@ exports.listCharsheets = function(user, callback){
 	Charsheet.findOne({propietario : user}, callback);
 }
 
-exports.getCharsheetsByOwner = function(user, callback) {
-	Charsheet.find({owner: user}, {},/* { sort: { 'fecha' : -1 } },*/ callback);
-}
-
 exports.getCharsheetsByName = function(name, callback) {
-	Charsheet.find({ 'informacion.nombre' : name}, {}, callback);
+	Charsheet.findOne({'informacion.nombre': name}, callback);
 }
 
 exports.createCharsheet = function(user, cs) {

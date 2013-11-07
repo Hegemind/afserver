@@ -21,6 +21,26 @@ exports.list = function(req, res){
 };
 
 /**
+ * Devuelve la ficha del usuario actual en la partida actual
+ */
+exports.get = function(req, res){
+	var name = req.params.id;
+	
+	db.getCharsheetsByName(name, function(err, data){
+		if (!data) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error reading charsheet ' + name
+			});
+		}
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+};
+
+/**
  * Devuelve las fichas asociadas a una partida
  */
 exports.listByGame = function(req, res){
@@ -33,29 +53,6 @@ exports.listByGame = function(req, res){
 			res.json(200, {
 				statusCode: '401',
 				statusMessage : 'Error reading charsheets'
-			});
-		}
-		else {
-			res.json(200, data);
-			res.end();
-		}
-	});
-};
-
-/**
- * Devuelve la ficha del usuario actual en la partida actual
- */
-exports.get = function(req, res){
-	var name = req.params.id;
-	console.log("name: "+name);
-// 	db.getCharsheetsByOwner(user, function(err, data){
-	db.getCharsheetsByName(name, function(err, data){
-		console.log("\ndata: " + data);
-		if (!data || err) {
-			res.json(200, {
-				statusCode: '401',
-				statusMessage : 'Error reading charsheet ' + name,
-				data : data
 			});
 		}
 		else {

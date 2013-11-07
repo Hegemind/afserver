@@ -5,13 +5,12 @@ var db = require('../admin/db');
  */
 exports.list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
-	var user = req.param.userid;
-	
+	var user = req.params.userid;
 	db.listCharsheets(user, function(err, data){
-		if (err) {
+		if (!data || err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets' + user
+				statusMessage : 'No charsheets for user ' + user
 			});
 		}
 		else {

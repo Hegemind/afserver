@@ -31,7 +31,7 @@ exports.listUsers = function(callback) {
 }
 
 exports.listCharsheets = function(user, callback){
-	Charsheet.find({}, {}, callback);
+	Charsheet.findOne({propietario : user}, callback);
 }
 
 exports.getCharsheetsByOwner = function(user, callback) {

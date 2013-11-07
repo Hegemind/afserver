@@ -66,8 +66,21 @@ exports.listByGame = function(req, res){
  * Crea una nueva ficha
  */
 exports.create = function(req, res){
-	var user = req.session.user_id;
+	var user = req.params.userid;
 	var charsheet = req.body;
 	
-	db.createCharsheet(user, charsheet);
+	db.createCharsheet(user, charsheet, function(err){
+		if (err){
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error saving a charsheet'
+			});
+		}
+		else {
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'Charsheet saved correctly'
+			});
+		}
+	});
 }

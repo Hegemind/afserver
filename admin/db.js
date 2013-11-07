@@ -31,19 +31,11 @@ exports.listUsers = function(callback) {
 }
 
 exports.listCharsheets = function(user, callback){
-	Charsheet.findOne({propietario : user}, callback);
+	Charsheet.find({propietario : user}, callback);
 }
 
 exports.getCharsheetsByName = function(name, callback) {
 	Charsheet.findOne({'informacion.nombre': name}, callback);
-}
-
-exports.createCharsheet = function(user, cs) {
-	new Charsheet({
-		owner: user,
-		personalInfo: cs.personalInfo,
-		stats: cs.stats
-	}).save();
 }
 
 exports.getCharsheetsByGame = function(game, callback) {
@@ -63,6 +55,19 @@ exports.createGame = function(name, master, callback) {
 		master: master,
 	});
 	newGame.save(callback);
+}
+
+exports.createCharsheet = function(user, cs, callback) {
+	Charsheet.find({propietario: user, 'informacion.nombre': cs.informacion.nombre}, function(err, data){
+		if(data) {
+			var msg = "Tried to create a character that already exists";
+			console.warn(msg);
+			callback(msg, null);
+		}
+		else
+			new Charsheet(cs).save(callback);
+		
+	});
 }
 
 exports.joinGame = function(name, player, callback) {

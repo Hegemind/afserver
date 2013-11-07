@@ -35,7 +35,7 @@ app.post('/api/user', users.register);
 app.get('/api/user/list', /*users.checkAuth,*/ users.list);
 
 // Charsheet CRUD
-app.post('/charsheet/:id', charsheet.create);
+app.post('/user/:userid/charsheet', charsheet.create);
 app.get('/charsheet/:id', charsheet.get);
 // TODO
 // app.put('/charsheet/:id', charsheet.update);

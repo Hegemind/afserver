@@ -62,15 +62,17 @@ exports.end = function(req, res){
 	});
 }
 
+
+
 exports.list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
-	var user = req.session.user_id;
+	var user = req.param.userid;
 	
 	db.listCampaignsByUser(user, function(err, data){
 		if (err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets'
+				statusMessage : 'Error reading charsheets for ' + user
 			});
 		}
 		else {

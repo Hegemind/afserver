@@ -5,13 +5,32 @@ var db = require('../admin/db');
  */
 exports.list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
-	var user = req.session.user_id;
-	
+	var user = req.params.userid;
 	db.listCharsheets(user, function(err, data){
-		if (err) {
+		if (!data || err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets'
+				statusMessage : 'No charsheets for user ' + user
+			});
+		}
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+};
+
+/**
+ * Devuelve la ficha del usuario actual en la partida actual
+ */
+exports.get = function(req, res){
+	var name = req.params.id;
+	
+	db.getCharsheetsByName(name, function(err, data){
+		if (!data) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error reading charsheet ' + name
 			});
 		}
 		else {
@@ -44,32 +63,24 @@ exports.listByGame = function(req, res){
 };
 
 /**
- * Devuelve la ficha del usuario actual en la partida actual
+ * Crea una nueva ficha
  */
-exports.current = function(req, res){
-	var user = req.session.user_id;
-	// TODO recuperar informacion de partida para ver cual es la ficha actual
-	console.log(user);
-	db.getCharsheetsByOwner(user, function(err, data){
-		if (err) {
+exports.create = function(req, res){
+	var user = req.params.userid;
+	var charsheet = req.body;
+	
+	db.createCharsheet(user, charsheet, function(err){
+		if (err){
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets'
+				statusMessage : 'Error saving a charsheet'
 			});
 		}
 		else {
-			res.json(200, data);
-			res.end();
+			res.json(200, {
+				statusCode: '200',
+				statusMessage : 'Charsheet saved correctly'
+			});
 		}
 	});
-};
-
-/**
- * Crea una nueva ficha
- */
-exports.new = function(req, res){
-	var user = req.session.user_id;
-	var charsheet = req.body;
-	
-	db.createCharsheet(user, charsheet);
 }

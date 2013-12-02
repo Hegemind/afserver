@@ -1,26 +1,19 @@
-var express = require('express');
-var users = require('./admin/users');
-var routes = require('./web/routes');
-var http = require('http');
-var charsheet = require('./game/charsheet');
-var game = require('./game/game');
-var path = require('path');
-var app = express();
-var mongoose = require('mongoose');
-	
-mongoose.connect('mongodb://localhost/afserverdb');
+var express		= require('express');
+var users 		= require('./src/queries/users');
+var db			= require('./src/queries/sqlite/db');
+var charsheet	= require('./src/game/charsheet');
+var game		= require('./src/game/game');
+var http		= require('http');
+var app			= express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/web/views');
-app.set('view engine', 'jade');
-app.use(express.favicon(path.join(__dirname, 'web/public/images/favicon.ico')));
+
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.cookieSession({ key: 'afcookie', secret: "el conan tambien", cookie: { maxAge: 60 * 60 * 1000 }}));
-app.use(express.static(path.join(__dirname, 'web/public')));
 app.use(app.router);
 
 // development only
@@ -55,21 +48,7 @@ app.get('/api/game/leave'/*, users.checkAuth*/, game.leave);
 app.get('/api/game/end'/*, users.checkAuth*/, game.end);
 app.get('/api/game/list'/*, users.checkAuth*/, game.list);
 
-// Web requests
-app.get('/', users.checkAuthRedirect, routes.sections.home);
-app.get('/profile', users.checkAuthRedirect, routes.sections.profile);
-app.get('/charsheets', users.checkAuthRedirect, routes.sections.charsheets);
-app.get('/campaigns', users.checkAuthRedirect, routes.sections.campaigns);
-
-app.get('/start', routes.start);
-app.get('/login', routes.login);
-app.get('/logout', routes.logout);
-app.get('/error', routes.error);
-
-app.get('/users', routes.sections.users);
-
-
-
+app.get('/test', db.findUserByLogin);
 
 // Run the party
 http.createServer(app).listen(app.get('port'), function(){

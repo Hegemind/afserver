@@ -1,4 +1,4 @@
-var db = require('../admin/db');
+var db = require('../queries/db');
 
 /**
  * Devuelve todos las fichas del sistema

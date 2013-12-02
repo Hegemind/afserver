@@ -4,9 +4,9 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // Cargar modelos
-var User = require('./models/user').User;
-var Charsheet = require('./models/charsheet').Charsheet;
-var Game = require("./models/game").Game;
+var User = require('../model/user').User;
+var Charsheet = require('../model/charsheet').Charsheet;
+var Game = require("../model/game").Game;
 
 // FUNCIONES
 exports.findUserByLogin = function(user, callback) {

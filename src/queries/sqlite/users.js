@@ -1,3 +1,6 @@
+var crypto = require('crypto');
+var db = require('./db');
+
 /**
  * Introduce el nuevo usuario en el sistema. Su login debe ser unico.
  * Ni el login ni el password pueden ser vacios.

@@ -1,4 +1,4 @@
-var db = require('../admin/db');
+var db = require('../queries/db');
 
 exports.start = function(req, res){
 	// TODO Comprobar que usuario logueado es el DJ de la partida actual

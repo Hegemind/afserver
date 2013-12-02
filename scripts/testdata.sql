@@ -164,4 +164,4 @@ INSERT INTO attribute VALUES(12, 10, 6, 2);
 
 COMMIT;
 /* Display all the records from the table */
-SELECT * FROM attribute;
+SELECT * FROM user;

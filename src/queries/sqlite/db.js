@@ -1,43 +1,55 @@
-var db = require("./sqlite/db.js");
+var crypto = require('crypto');
+var sqlite3 = require('sqlite3').verbose();
 
-// INTERFAZ de PERSISTENCIA
+var db = new sqlite3.Database('../../test.db', function(err){
+	if(err)
+		console.error("Database could not be opened");
+});
 
+// FUNCIONES
 exports.findUserByLogin = function(user, callback) {
-	db.findUserByLogin("leandro", callback);
+// 	db.each("SELECT rowid AS id, info FROM lorem", callback);
+	
+	db.each("SELECT * FROM user", function(err, row) {
+		if(err)
+			console.error(err);
+		else
+			console.log(row);
+	});
 }
 
 exports.createNewUser = function(user, pass, callback) {
-	db.createNewUser(user, pass, callback);
+	
 }
 
 exports.listUsers = function(callback) {
-	db.listUsers(callback);
+	
 }
 
 exports.listCharsheets = function(user, callback){
-	db.listCharsheets(user, callback);
+	
 }
 
 exports.getCharsheetsByName = function(name, callback) {
-	db.getCharsheetsByName(name, callback);
+	
 }
 
 exports.getCharsheetsByGame = function(game, callback) {
-	db.getCharsheetsByGame(game, callback);
+	
 }
 
 exports.listCampaignsByUser = function(user, callback) {
-	db.listCampaignsByUser(user, callback);
+	
 }
 
 exports.createGame = function(name, master, callback) {
-	db.createGame(name, master, callback);
+	
 }
 
 exports.createCharsheet = function(user, cs, callback) {
-	db.createCharsheet(user, cs, callback);
+	
 }
 
 exports.joinGame = function(name, player, callback) {
-	db.joinGame(name, player, callback);
+	
 }

@@ -57,17 +57,17 @@ INSERT INTO attribute_type VALUES(6, "Charisma", "CHA", "long description", "sho
 -- *******************************************************************************
 -- USERS
 
-DROP TABLE user;
-CREATE TABLE user (
+DROP TABLE player;
+CREATE TABLE player (
 	id 			INT NOT NULL ,
-	username	VARCHAR(50) NOT NULL UNIQUE,
+	playername	VARCHAR(50) NOT NULL UNIQUE,
 	password	VARCHAR(10) NULL,
 	PRIMARY KEY (id));
 
-INSERT INTO user VALUES(1, "leandro", "123");
-INSERT INTO user VALUES(2, "marijose", "123");
-INSERT INTO user VALUES(3, "esteban", "123");
-INSERT INTO user VALUES(4, "natalia", "123");
+INSERT INTO player VALUES(1, "leandro", "123");
+INSERT INTO player VALUES(2, "marijose", "123");
+INSERT INTO player VALUES(3, "esteban", "123");
+INSERT INTO player VALUES(4, "natalia", "123");
 
 -- *******************************************************************************
 -- RACES
@@ -115,7 +115,7 @@ CREATE  TABLE IF NOT EXISTS character (
 	class_id	INT NOT NULL ,
 	PRIMARY KEY (id) ,
 	FOREIGN KEY (player_id )
-		REFERENCES user (id )
+		REFERENCES player (id )
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION,
 	FOREIGN KEY (race_id )
@@ -135,11 +135,11 @@ INSERT INTO character VALUES(2, "Olajuwon", 45, 1, 35, "basket", "220", "270", "
 
 DROP TABLE IF EXISTS attribute ;
 CREATE  TABLE IF NOT EXISTS attribute (
-	id					INT NOT NULL ,
 	current_value		INT NOT NULL ,
+	modifier			INT NULL,
 	attribute_type_id	INT NOT NULL ,
 	character_id		INT NOT NULL ,
-	PRIMARY KEY (id) ,
+	PRIMARY KEY (attribute_type_id, character_id) ,
 	FOREIGN KEY (attribute_type_id )
 		REFERENCES attribute_type (id )
 		ON DELETE NO ACTION
@@ -149,19 +149,19 @@ CREATE  TABLE IF NOT EXISTS attribute (
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION);
 
-INSERT INTO attribute VALUES(1, 10, 1, 1);
-INSERT INTO attribute VALUES(2, 10, 2, 1);
-INSERT INTO attribute VALUES(3, 10, 3, 1);
-INSERT INTO attribute VALUES(4, 10, 4, 1);
-INSERT INTO attribute VALUES(5, 10, 5, 1);
-INSERT INTO attribute VALUES(6, 10, 6, 1);
-INSERT INTO attribute VALUES(7, 10, 1, 2);
-INSERT INTO attribute VALUES(8, 10, 2, 2);
-INSERT INTO attribute VALUES(9, 10, 3, 2);
-INSERT INTO attribute VALUES(10, 10, 4, 2);
-INSERT INTO attribute VALUES(11, 10, 5, 2);
-INSERT INTO attribute VALUES(12, 10, 6, 2);
+INSERT INTO attribute VALUES(10, 0, 1, 1);
+INSERT INTO attribute VALUES(10, 0, 2, 1);
+INSERT INTO attribute VALUES(10, 0, 3, 1);
+INSERT INTO attribute VALUES(10, 0, 4, 1);
+INSERT INTO attribute VALUES(10, 0, 5, 1);
+INSERT INTO attribute VALUES(10, 0, 6, 1);
+INSERT INTO attribute VALUES(10, 0, 1, 2);
+INSERT INTO attribute VALUES(10, 0, 2, 2);
+INSERT INTO attribute VALUES(10, 0, 3, 2);
+INSERT INTO attribute VALUES(10, 0, 4, 2);
+INSERT INTO attribute VALUES(10, 0, 5, 2);
+INSERT INTO attribute VALUES(10, 0, 6, 2);
 
 COMMIT;
 /* Display all the records from the table */
-SELECT * FROM user;
+-- SELECT * FROM player;

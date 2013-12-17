@@ -31,6 +31,7 @@ app.get('/user/:userid', /*users.checkAuth,*/ db.findUserByLogin);
 // app.post('/user/:userid/character', character.create);
 app.get('/character/:id', db.getCharactersById);
 app.post('/character', db.createCharacter);
+app.get('/user/:userid/characters', db.getAllCharactersByUserId);
 // TODO
 // app.put('/character/:id', character.update);
 // app.delete('/character/:id', character.delete);

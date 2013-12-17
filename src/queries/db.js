@@ -53,6 +53,23 @@ exports.getCharactersById = function(req, res) {
 	});
 }
 
+exports.getAllCharactersByUserId = function(req, res) {
+	var userid = req.params.userid;
+	
+	characters.getAllCharactersByUserId(db, userid, function(err, data){
+		if (!data) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error reading user ' + userid
+			});
+		}
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+}
+
 exports.createCharacter = function(user, cs, callback) {
 	
 }

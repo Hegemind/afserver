@@ -31,8 +31,8 @@ exports.join = function(req, res){
 	var user = req.session.user_id;
 	// TODO recuperar informacion de partida para ver cual es la ficha actual
 	
-	db.getCharsheetsByOwner(user, function(err, data){
-		if (err) console.log('Error reading Charsheet collection');
+	db.getCharactersByOwner(user, function(err, data){
+		if (err) console.log('Error reading Character collection');
 		else {
 			res.json(200, data);
 			res.end();
@@ -72,7 +72,7 @@ exports.list = function(req, res){
 		if (err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets for ' + user
+				statusMessage : 'Error reading Characters for ' + user
 			});
 		}
 		else {

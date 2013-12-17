@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-exports.Charsheet = mongoose.model('Charsheet', new mongoose.Schema({
+exports.Character = mongoose.model('Character', new mongoose.Schema({
 	propietario: String,
 	descripcion: String,
 	tipo: String,

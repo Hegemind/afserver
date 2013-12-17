@@ -10,10 +10,10 @@ var db = new sqlite3.Database('../../test.db', function(err){
 exports.findUserByLogin = function(user, callback) {
 // 	db.each("SELECT rowid AS id, info FROM lorem", callback);
 	
-	db.each("SELECT * FROM user", function(err, row) {
+	db.get("SELECT * FROM player WHERE name=$name", { $name : user }, function(err, row) {
 		if(err)
 			console.error(err);
-		else
+		else if(row)
 			console.log(row);
 	});
 }
@@ -23,18 +23,23 @@ exports.createNewUser = function(user, pass, callback) {
 }
 
 exports.listUsers = function(callback) {
+	db.get("SELECT * FROM player WHERE name=$name", { $name : user }, function(err, row) {
+		if(err)
+			console.error(err);
+		else if(row)
+			console.log(row);
+	});
+}
+
+exports.listCharacters = function(user, callback){
 	
 }
 
-exports.listCharsheets = function(user, callback){
+exports.getCharactersByName = function(name, callback) {
 	
 }
 
-exports.getCharsheetsByName = function(name, callback) {
-	
-}
-
-exports.getCharsheetsByGame = function(game, callback) {
+exports.getCharactersByGame = function(game, callback) {
 	
 }
 
@@ -46,7 +51,7 @@ exports.createGame = function(name, master, callback) {
 	
 }
 
-exports.createCharsheet = function(user, cs, callback) {
+exports.createCharacter = function(user, cs, callback) {
 	
 }
 

@@ -5,7 +5,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 // Cargar modelos
 var User = require('../model/user').User;
-var Charsheet = require('../model/charsheet').Charsheet;
+var Character = require('../model/Character').Character;
 var Game = require("../model/game").Game;
 
 // FUNCIONES
@@ -30,17 +30,17 @@ exports.listUsers = function(callback) {
 	User.find({}, null, callback);
 }
 
-exports.listCharsheets = function(user, callback){
-	Charsheet.find({propietario : user}, callback);
+exports.listCharacters = function(user, callback){
+	Character.find({propietario : user}, callback);
 }
 
-exports.getCharsheetsByName = function(name, callback) {
-	Charsheet.findOne({'informacion.nombre': name}, callback);
+exports.getCharactersByName = function(name, callback) {
+	Character.findOne({'informacion.nombre': name}, callback);
 }
 
-exports.getCharsheetsByGame = function(game, callback) {
+exports.getCharactersByGame = function(game, callback) {
 	// TODO devuelve todas las partidas de la base de datos
-	Charsheet.find({game: game}, {}, callback);
+	Character.find({game: game}, {}, callback);
 }
 
 exports.listCampaignsByUser = function(user, callback) {
@@ -57,15 +57,15 @@ exports.createGame = function(name, master, callback) {
 	newGame.save(callback);
 }
 
-exports.createCharsheet = function(user, cs, callback) {
-	Charsheet.find({propietario: user, 'informacion.nombre': cs.informacion.nombre}, function(err, data){
+exports.createCharacter = function(user, cs, callback) {
+	Character.find({propietario: user, 'informacion.nombre': cs.informacion.nombre}, function(err, data){
 		if(data) {
 			var msg = "Tried to create a character that already exists";
 			console.warn(msg);
 			callback(msg, null);
 		}
 		else
-			new Charsheet(cs).save(callback);
+			new Character(cs).save(callback);
 		
 	});
 }

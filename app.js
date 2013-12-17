@@ -1,7 +1,7 @@
 var express		= require('express');
 var users 		= require('./src/queries/users');
-var db			= require('./src/queries/sqlite/db');
-var charsheet	= require('./src/game/charsheet');
+var db			= require('./src/queries/db');
+// var character	= require('./src/game/character');
 var game		= require('./src/game/game');
 var http		= require('http');
 var app			= express();
@@ -25,20 +25,21 @@ if ('development' == app.get('env')) {
 app.post('/api/login', users.login);
 app.get('/api/logout', users.logout); 
 app.post('/api/user', users.register);
-app.get('/api/user/list', /*users.checkAuth,*/ users.list);
+app.get('/user/:userid', /*users.checkAuth,*/ db.findUserByLogin);
 
-// Charsheet CRUD
-app.post('/user/:userid/charsheet', charsheet.create);
-app.get('/charsheet/:id', charsheet.get);
+// Character CRUD
+// app.post('/user/:userid/character', character.create);
+app.get('/character/:id', db.getCharactersById);
+app.post('/character', db.createCharacter);
 // TODO
-// app.put('/charsheet/:id', charsheet.update);
-// app.delete('/charsheet/:id', charsheet.delete);
+// app.put('/character/:id', character.update);
+// app.delete('/character/:id', character.delete);
 
-// Get all charsheets from a player
-app.get('/user/:userid/charsheets', charsheet.list);
+// Get all characters from a player
+// app.get('/user/:userid/characters', character.list);
 
-// Get player charsheet for a game
-// app.get('/game/:gameid/charsheet'/*, users.checkAuth*/, charsheet.current);
+// Get player character for a game
+// app.get('/game/:gameid/character'/*, users.checkAuth*/, character.current);
 
 
 // Game

@@ -6,11 +6,11 @@ var db = require('../queries/db');
 exports.list = function(req, res){
 	// TODO Comprobar que usuario logueado es ADMIN
 	var user = req.params.userid;
-	db.listCharsheets(user, function(err, data){
+	db.listCharacters(user, function(err, data){
 		if (!data || err) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'No charsheets for user ' + user
+				statusMessage : 'No Characters for user ' + user
 			});
 		}
 		else {
@@ -26,11 +26,11 @@ exports.list = function(req, res){
 exports.get = function(req, res){
 	var name = req.params.id;
 	
-	db.getCharsheetsByName(name, function(err, data){
+	db.getCharactersByName(name, function(err, data){
 		if (!data) {
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheet ' + name
+				statusMessage : 'Error reading Character ' + name
 			});
 		}
 		else {
@@ -48,11 +48,11 @@ exports.listByGame = function(req, res){
 	var user = req.session.user_id;
 	var game = req.session.game_id;
 	
-	Charsheet.find({}, {}, function(err, data){
+	Character.find({}, {}, function(err, data){
 		if (err){
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error reading charsheets'
+				statusMessage : 'Error reading Characters'
 			});
 		}
 		else {
@@ -67,19 +67,19 @@ exports.listByGame = function(req, res){
  */
 exports.create = function(req, res){
 	var user = req.params.userid;
-	var charsheet = req.body;
+	var Character = req.body;
 	
-	db.createCharsheet(user, charsheet, function(err){
+	db.createCharacter(user, Character, function(err){
 		if (err){
 			res.json(200, {
 				statusCode: '401',
-				statusMessage : 'Error saving a charsheet'
+				statusMessage : 'Error saving a Character'
 			});
 		}
 		else {
 			res.json(200, {
 				statusCode: '200',
-				statusMessage : 'Charsheet saved correctly'
+				statusMessage : 'Character saved correctly'
 			});
 		}
 	});

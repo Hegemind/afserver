@@ -5,11 +5,9 @@ BEGIN TRANSACTION;
 
 DROP TABLE game_system;
 CREATE TABLE game_system (
-	id		INT			NOT NULL ,
+	id		INTEGER PRIMARY KEY AUTOINCREMENT,
 	name	VARCHAR(60)	NOT NULL ,
-	version	VARCHAR(30)	NULL,
-						  
-	PRIMARY KEY (id) );
+	version	VARCHAR(30)	NULL);
 
 INSERT INTO game_system VALUES(1, "d20", "version 1");
 INSERT INTO game_system VALUES(2, "Storyteller", "2007");
@@ -20,12 +18,10 @@ INSERT INTO game_system VALUES(3, "GURPS", "7th edition");
 
 DROP TABLE game;
 CREATE TABLE game (
-	id				INT			NOT NULL ,
+	id				INTEGER PRIMARY KEY AUTOINCREMENT,
 	name			VARCHAR(32)	NOT NULL ,
 	version			VARCHAR(30)	NULL,
 	game_system_id	INT			NOT NULL ,
-	
-	PRIMARY KEY (id) ,
 	FOREIGN KEY (game_system_id) REFERENCES game_system (id) ON DELETE NO ACTION ON UPDATE NO ACTION);
 
 
@@ -36,7 +32,7 @@ INSERT INTO game VALUES(1, "DnD", 1, "4th Edition");
 
 DROP TABLE attribute_type;
 CREATE TABLE attribute_type (
-	id 					INT NOT NULL ,
+	id					INTEGER PRIMARY KEY AUTOINCREMENT,
 	name				VARCHAR(50) NOT NULL,
 	abreviation			VARCHAR(10) NULL,
 	description			VARCHAR(200) NULL ,
@@ -44,7 +40,6 @@ CREATE TABLE attribute_type (
 	min_value			INT NULL ,
 	max_value			INT NULL ,
 	game_id				INT NOT NULL ,
-	PRIMARY KEY (id),
 	FOREIGN KEY (game_id) REFERENCES game (id) ON DELETE NO ACTION ON UPDATE NO ACTION);
 
 INSERT INTO attribute_type VALUES(1, "Strength", "STR", "long description", "short description", 0, 100, 1);
@@ -59,10 +54,9 @@ INSERT INTO attribute_type VALUES(6, "Charisma", "CHA", "long description", "sho
 
 DROP TABLE player;
 CREATE TABLE player (
-	id 			INT NOT NULL ,
-	playername	VARCHAR(50) NOT NULL UNIQUE,
-	password	VARCHAR(10) NULL,
-	PRIMARY KEY (id));
+	id			INTEGER PRIMARY KEY AUTOINCREMENT,
+	name		VARCHAR(50) NOT NULL UNIQUE,
+	password	VARCHAR(10) NULL);
 
 INSERT INTO player VALUES(1, "leandro", "123");
 INSERT INTO player VALUES(2, "marijose", "123");
@@ -74,9 +68,8 @@ INSERT INTO player VALUES(4, "natalia", "123");
 
 DROP TABLE IF EXISTS race;
 CREATE  TABLE IF NOT EXISTS race (
-  id	INT NOT NULL ,
-  name	VARCHAR(64) NOT NULL ,
-  PRIMARY KEY (id));
+  id			INTEGER PRIMARY KEY AUTOINCREMENT,
+  name	VARCHAR(64) NOT NULL);
 
 INSERT INTO race VALUES(1, "human");
 INSERT INTO race VALUES(2, "elf");
@@ -87,9 +80,8 @@ INSERT INTO race VALUES(3, "orc");
 
 DROP TABLE IF EXISTS class;
 CREATE  TABLE IF NOT EXISTS class (
-	id		INT NOT NULL ,
-	name	VARCHAR(64) NOT NULL ,
-	PRIMARY KEY (id) );
+	id			INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	VARCHAR(64) NOT NULL);
 
 INSERT INTO class VALUES(1, "class1");
 INSERT INTO class VALUES(2, "class2");
@@ -100,7 +92,7 @@ INSERT INTO class VALUES(3, "class3");
 
 DROP TABLE IF EXISTS character ;
 CREATE  TABLE IF NOT EXISTS character (
-	id			INT NOT NULL ,
+	id			INTEGER PRIMARY KEY AUTOINCREMENT,
 	name		VARCHAR(32) NOT NULL ,
 	age			INT NULL ,
 	is_npc		TINYINT(1) NULL ,
@@ -113,7 +105,6 @@ CREATE  TABLE IF NOT EXISTS character (
 	player_id	INT NOT NULL ,
 	race_id		INT NOT NULL ,
 	class_id	INT NOT NULL ,
-	PRIMARY KEY (id) ,
 	FOREIGN KEY (player_id )
 		REFERENCES player (id )
 		ON DELETE NO ACTION

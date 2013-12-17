@@ -1,43 +1,74 @@
-var db = require("./sqlite/db.js");
+var crypto = require('crypto');
+var sqlite3 = require('sqlite3').verbose();
+var players = require('./players');
+var characters = require('./characters');
 
-// INTERFAZ de PERSISTENCIA
+var db = new sqlite3.Database('test.db', function(err){
+	if(err)
+		console.error("Database could not be opened");
+});
 
-exports.findUserByLogin = function(user, callback) {
-	db.findUserByLogin("leandro", callback);
-}
-
-exports.createNewUser = function(user, pass, callback) {
-	db.createNewUser(user, pass, callback);
+exports.findUserByLogin = function(req, res) {
+	var user = req.params.userid;
+	players.findUserByLogin(db, user, function(err, row){
+		if (!row) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error reading character ' + name
+			});
+		}
+		else {
+			res.json(200, row);
+			res.end();
+		}
+	});
 }
 
 exports.listUsers = function(callback) {
-	db.listUsers(callback);
+	players.listUsers(db, callback);
 }
 
-exports.listCharsheets = function(user, callback){
-	db.listCharsheets(user, callback);
+exports.createNewUser = function(user, pass, callback) {
+	players.createNewUser(db, user, pass, callback);
 }
 
-exports.getCharsheetsByName = function(name, callback) {
-	db.getCharsheetsByName(name, callback);
+exports.listCharacters = function(user, callback){
+	
 }
 
-exports.getCharsheetsByGame = function(game, callback) {
-	db.getCharsheetsByGame(game, callback);
+exports.getCharactersById = function(req, res) {
+	var id = req.params.id;
+	
+	characters.getCharactersById(db, id, function(err, data){
+		if (!data) {
+			res.json(200, {
+				statusCode: '401',
+				statusMessage : 'Error reading character ' + id
+			});
+		}
+		else {
+			res.json(200, data);
+			res.end();
+		}
+	});
+}
+
+exports.createCharacter = function(user, cs, callback) {
+	
+}
+
+exports.getCharactersByGame = function(game, callback) {
+	
 }
 
 exports.listCampaignsByUser = function(user, callback) {
-	db.listCampaignsByUser(user, callback);
+	
 }
 
 exports.createGame = function(name, master, callback) {
-	db.createGame(name, master, callback);
-}
-
-exports.createCharsheet = function(user, cs, callback) {
-	db.createCharsheet(user, cs, callback);
+	
 }
 
 exports.joinGame = function(name, player, callback) {
-	db.joinGame(name, player, callback);
+	
 }
